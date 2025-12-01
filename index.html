@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>DinoVerse</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦖</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+        crossorigin="anonymous">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================
+       ส่วนที่ 1: CSS (ตกแต่งความสวยงาม)
+       ========================================= */
+    :root{
+      --bg-1: #1c1917;
+      --bg-2: #292524;
+      --card: #2d2a26;
+      --card-border: #44403c;
+      --brand: #d97706;
+      --brand-glow: #b45309;
+      --accent: #65a30d;
+      --ok: #4ade80;
+      --warn: #fbbf24;
+      --danger: #ef4444;
+      --muted: #a8a29e;
+      --text: #e7e5e4;
+    }
+    
+    html { min-height: 100%; }
+    
+    body{
+      font-family: 'IBM Plex Sans Thai', sans-serif;
+      background-color: var(--bg-1);
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(101, 163, 13, 0.08), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(217, 119, 6, 0.08), transparent 25%),
+        linear-gradient(to bottom, #1c1917, #292524);
+      background-attachment: fixed;
+      background-size: cover;
+      background-repeat: no-repeat;
+      color:var(--text);
+      overflow-x:hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    h1, h2, h3, h4, h5, h6, .brand {
+      font-family: 'IBM Plex Sans Thai', sans-serif;
+      font-weight: 600; 
+      letter-spacing: 0px; 
+    }
+
+    /* --- Navbar --- */
+    .navbar{
+      background: rgba(28, 25, 23, 0.95) !important;
+      border-bottom: 2px solid var(--brand);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    
+    /* --- Hero --- */
+    .hero{
+      position:relative;overflow:hidden;border-radius:12px;
+      background: 
+        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+        url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMjkyNTI0Ii8+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiMzMzMiLz4KPC9zdmc+'),
+        linear-gradient(135deg, #292524, #1c1917);
+      border: 1px solid var(--card-border);
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.7), 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .glow{ text-shadow: 2px 2px 0px #000; color: #fde047; }
+
+    /* --- Buttons --- */
+    .btn-neo{
+      border: 2px solid var(--card-border);
+      background: linear-gradient(180deg, #44403c, #292524);
+      color: #d6d3d1;
+      font-family: 'IBM Plex Sans Thai', sans-serif;
+      font-weight: 600;
+      box-shadow: 0 4px 0px #1c1917;
+      transition: all .1s ease-out;
+      text-transform: uppercase;
+    }
+    .btn-neo:hover{
+      background: #57534e;
+      border-color: var(--brand);
+      color: var(--brand);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0px #1c1917;
+    }
+    .btn-neo:active { transform: translateY(2px); box-shadow: 0 2px 0px #1c1917; }
+    
+    .btn-outline-light {
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      font-family: 'IBM Plex Sans Thai', sans-serif;
+      font-weight: 600;
+    }
+    .btn-outline-light:hover {
+      background: var(--accent);
+      color: #1c1917;
+      box-shadow: 0 0 15px rgba(101, 163, 13, 0.4);
+    }
+
+    /* --- Cards --- */
+    .card-glass{
+      background: #2d2a26;
+      border: 1px solid var(--card-border);
+      border-top: 3px solid var(--card-border);
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    .card-glass::after {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 0 15px 15px 0;
+      border-color: transparent var(--bg-1) transparent transparent;
+    }
+
+    .chip{
+      font-size:.8rem;
+      border: 1px solid #57534e;
+      padding:.25rem .5rem;
+      border-radius: 4px;
+      color: #d6d3d1;
+      background: #1c1917;
+      font-family: 'IBM Plex Sans Thai', sans-serif;
+    }
+    
+    .section-title{
+      font-weight:700;
+      background: linear-gradient(to right, #fcd34d, #d97706);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      text-transform: uppercase;
+      border-left: 4px solid var(--brand);
+      padding-left: 12px;
+    }
+
+    @keyframes dungdik {
+      0% { transform: translateY(-6px) rotate(0deg); }
+      25% { transform: translateY(-6px) rotate(-2deg); }
+      50% { transform: translateY(-6px) rotate(2deg); }
+      75% { transform: translateY(-6px) rotate(-1deg); }
+      100% { transform: translateY(-6px) rotate(0deg); }
+    }
+
+    .dino-card{ transition: transform .2s ease, border-color .2s ease; cursor:pointer; }
+    .dino-card:hover{
+      animation: dungdik 0.5s ease-in-out forwards;
+      border-color: var(--brand);
+      background: #35312c;
+      box-shadow: 0 10px 25px rgba(217, 119, 6, 0.2);
+    }
+
+    #view-timeline .card-glass { transition: transform .2s ease, border-color .2s ease; cursor: pointer; }
+    #view-timeline .card-glass:hover {
+      animation: dungdik 0.5s ease-in-out forwards;
+      border-color: var(--brand);
+      background: #35312c;
+      box-shadow: 0 10px 25px rgba(217, 119, 6, 0.2);
+    }
+
+    .soft-divider{
+      height: 2px;
+      background: radial-gradient(circle, var(--card-border) 0%, transparent 100%);
+      margin: 1rem 0;
+      opacity: 0.5;
+    }
+
+    .kpi{
+      border: 2px dashed var(--card-border);
+      border-radius: 8px; padding:.75rem 1rem;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .text-muted { color: #78716c !important; }
+
+    .alert{
+      background: #35312c;
+      color: var(--text);
+      border: 1px solid var(--brand);
+      border-left: 5px solid var(--brand);
+    }
+
+    .video-responsive-container {
+      position: relative; overflow: hidden; width: 100%;
+      padding-top: 56.25%; border: 4px solid #292524;
+      border-radius: 8px; background: #000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .video-responsive-container iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; pointer-events: none;
+    }
+    
+    .dino-figure{
+      width: 100%;
+      aspect-ratio: 4/3; 
+      border-radius: 8px;
+      background: radial-gradient(circle at center, #44403c 0%, #1c1917 80%);
+      border: 1px solid #44403c;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dino-figure img { width: 100%; height: 100%; object-fit: cover; }
+    .dino-figure svg {
+      width: 85%; height: 85%;
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+      transition: transform 0.3s ease;
+    }
+    .dino-card:hover .dino-figure svg { transform: scale(1.1) rotate(-2deg); }
+    
+    [data-view]{display:none;}
+    [data-view].active{display:block;}
+    
+    .navbar-nav .nav-link {
+        position: relative; color: #ffffff !important;
+        font-family: 'IBM Plex Sans Thai', sans-serif;
+        text-transform: uppercase; font-size: 0.9rem;
+        font-weight: 700; letter-spacing: 0.5px;
+        padding: 0.5rem 1.2rem !important; 
+        margin: 0 0.25rem; border: 1px solid transparent; 
+        border-radius: 50px; 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1; overflow: hidden;
+    }
+    .navbar-nav .nav-link:hover, .navbar-nav .nav-link.show {
+        color: var(--brand) !important;
+        border-color: rgba(217, 119, 6, 0.5);
+        background: rgba(217, 119, 6, 0.1);
+        box-shadow: 0 0 15px rgba(217, 119, 6, 0.2);
+        transform: translateY(-2px);
+    }
+    .navbar-nav .nav-link.active {
+        color: #ffffff !important; background: var(--brand);
+        border-color: var(--brand);
+        box-shadow: 0 4px 15px rgba(217, 119, 6, 0.5);
+        font-weight: 700; transform: scale(1.05);
+    }
+    
+    .dropdown-menu {
+      background-color: var(--bg-2);
+      border: 1px solid var(--brand);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+      margin-top: 10px !important;
+      border-radius: 8px;
+    }
+    .dropdown-item {
+      color: var(--text);
+      font-family: 'IBM Plex Sans Thai', sans-serif;
+      padding: 10px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-weight: 600; 
+    }
+    .dropdown-item:last-child { border-bottom: none; }
+    .dropdown-item:hover {
+      background-color: var(--brand);
+      color: #fff;
+    }
+    
+    .text-dense { text-align: left; }
+
+    /* --- Footer --- */
+    .main-footer {
+      background: linear-gradient(to top, #151312, #242120);
+      border-top: 1px solid var(--card-border);
+      position: relative;
+      margin-top: auto;
+    }
+    .main-footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand), var(--accent), var(--danger));
+    }
+    .footer-title {
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      font-size: 1.2rem;
+      letter-spacing: 0.5px;
+    }
+    .footer-link {
+      color: var(--muted);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 0.8rem;
+      transition: all 0.3s ease;
+    }
+    .footer-link:hover {
+      color: var(--brand);
+      transform: translateX(5px);
+      text-shadow: 0 0 10px rgba(217, 119, 6, 0.4);
+    }
+    .footer-social-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #35312c;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      text-decoration: none;
+      border: 1px solid var(--card-border);
+      transition: all 0.3s;
+    }
+    .footer-social-btn:hover {
+      background: var(--brand);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    /* --- Floating Logo --- */
+    @keyframes float-bob {
+      0% { transform: translateY(0px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+      50% { transform: translateY(-10px); box-shadow: 0 25px 15px rgba(0,0,0,0.1); }
+      100% { transform: translateY(0px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    }
+    .floating-logo {
+      position: fixed; bottom: 30px; right: 30px;  
+      width: 70px; height: 70px; 
+      background: #ffffff; 
+      border: 3px solid var(--brand); 
+      border-radius: 50%; 
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; cursor: pointer; overflow: hidden;
+      animation: float-bob 3s ease-in-out infinite;
+      transition: all 0.3s ease;
+    }
+    .floating-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .floating-logo:hover {
+      animation-play-state: paused; 
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 0 25px rgba(217, 119, 6, 0.7);
+      border-color: #fff; 
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#/">
+        <span style="font-size: 2rem;">🦖</span>
+        <span style="font-weight: 800; font-size: 1.5rem; color: #fff; letter-spacing: 0.5px;">DinoVerse</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nv">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nv">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#/">หน้าหลัก</a></li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              สายพันธุ์
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#/species">🦖 ทั้งหมด (All)</a></li>
+              <li><a class="dropdown-item" href="#/species/carnivore">🍖 กินเนื้อ (Carnivores)</a></li>
+              <li><a class="dropdown-item" href="#/species/herbivore">🌿 กินพืช (Herbivores)</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item"><a class="nav-link" href="#/timeline">ไทม์ไลน์</a></li>
+          <li class="nav-item"><a class="nav-link" href="#/gallery">แกลเลอรี 3 มิติ</a></li>
+          <li class="nav-item"><a class="nav-link" href="#/members">สมาชิก</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top:100px;padding-bottom:60px;">
+    
+    <section id="view-home" data-view class="active">
+      <div class="hero p-4 p-md-5 mb-5">
+        <div class="row align-items-center">
+          <div class="col-lg-7">
+            <span class="chip text-warning mb-2 border-warning">🦖 ยินดีต้อนรับสู่โลกดึกดำบรรพ์</span>
+            <h1 class="display-4 glow fw-bold mb-3">DinoVerse: มหาทวีปแห่งชีวิต</h1>
+            <p class="lead text-light text-opacity-75" style="line-height: 1.8;">
+              ย้อนเวลาไปเมื่อ 250 ล้านปีก่อน สู่ยุคที่สัตว์เลื้อยคลานขนาดยักษ์ครองโลก 
+              สำรวจวิวัฒนาการที่น่าทึ่ง ตั้งแต่จุดกำเนิดในยุคไทรแอสซิก 
+              ความรุ่งโรจน์ในยุคจูราสซิก และจุดจบอันน่าเศร้าในยุคครีเทเชียส
+            </p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+              <a href="#/species" class="btn btn-neo btn-lg px-4">🦕 สำรวจสายพันธุ์</a>
+              <a href="#/timeline" class="btn btn-outline-light btn-lg px-4">⏳ ไทม์ไลน์ธรณีกาล</a>
+            </div>
+            
+            <div class="row g-3 mt-4 pt-3 border-top border-secondary border-opacity-50">
+              <div class="col-4">
+                <div class="d-flex align-items-center gap-2">
+                  <h2 class="mb-0 text-warning">12+</h2>
+                  <small class="text-white lh-1">สายพันธุ์<br></small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-flex align-items-center gap-2">
+                  <h2 class="mb-0 text-success">3</h2>
+                  <small class="text-white lh-1">มหายุค<br>แห่งชีวิต</small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-flex align-items-center gap-2">
+                  <h2 class="mb-0 text-danger">3D</h2>
+                  <small class="text-white lh-1">โมเดล<br>สมจริง</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-5 mt-5 mt-lg-0">
+            <div class="video-responsive-container shadow-lg">
+              <iframe 
+                src="https://www.youtube.com/embed/nK2WNlhKRZk?autoplay=1&mute=1&loop=1&playlist=nK2WNlhKRZk&controls=0&showinfo=0&modestbranding=1" 
+                title="Dinosaur World" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col-12">
+           <h3 class="section-title mb-4">🌟 Spotlight: สายพันธุ์น่าจับตามอง</h3>
+        </div>
+        <div class="col-lg-8">
+           <div class="card-glass p-0 overflow-hidden h-100 d-flex flex-column flex-md-row">
+              <div class="col-md-5 position-relative">
+                 <img src="https://images.fineartamerica.com/images/artworkimages/medium/2/1-artwork-of-a-spinosaurus-dinosaur-mark-garlick.jpg" 
+                      class="h-100 w-100 object-fit-cover" alt="Spinosaurus">
+                 <div class="position-absolute top-0 start-0 m-3">
+                    <span class="badge bg-danger">Predator King</span>
+                 </div>
+              </div>
+              <div class="col-md-7 p-4 d-flex flex-column justify-content-center">
+                 <h2 class="fw-bold mb-1">Spinosaurus</h2>
+                 <p class="text-warning mb-3">"นักล่าแห่งสายน้ำที่ใหญ่กว่า T-Rex"</p>
+                 <p class="text-light text-opacity-75 mb-4">
+                    ค้นพบความลับของไดโนเสาร์กินเนื้อที่ใหญ่ที่สุดในประวัติศาสตร์ ด้วยกระโดงหลังสูงเท่าคน และหางใบพายที่ออกแบบมาเพื่อว่ายน้ำโดยเฉพาะ
+                 </p>
+                 <div>
+                    <button onclick="go('#/species/spinosaurus')" class="btn btn-sm btn-neo">อ่านข้อมูลเจาะลึก →</button>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="card-glass p-4 h-100 bg-opacity-10" style="background: #2f2820;">
+                <h5 class="text-light mb-3">💡 Did you know?</h5>
+                <p class="text-light text-opacity-75 mb-4">
+                    "คุณรู้หรือไม่? ไดโนเสาร์ไม่ได้สูญพันธุ์ไปทั้งหมด! 
+                    นกในปัจจุบันคือนักล่าสายพันธุ์ Theropods ที่รอดชีวิตและวิวัฒนาการจนบินได้"
+                </p>
+                <div class="soft-divider"></div>
+                <div class="d-flex align-items-center gap-3 mt-3">
+                    <span style="font-size: 2rem;">🐔</span>
+                    <span class="text-muted">➔</span>
+                    <span style="font-size: 2rem;">🦖</span>
+                </div>
+                <p class="small text-white mt-2">ไก่และนกกระจอกเทศคือญาติห่างๆ ของ T-Rex</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="mb-5">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <h3 class="section-title">📚 หมวดหมู่ทางชีววิทยา</h3>
+            <a href="#/species" class="text-decoration-none text-warning small">ดูทั้งหมด →</a>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card-glass p-4 h-100 hover-lift">
+                    <div class="mb-3 display-4">🥩</div>
+                    <h4 class="text-danger">Theropods</h4>
+                    <p class="text-white small">นักล่าเดินสองขา (Bipedal Carnivores) มีตั้งแต่นกตัวเล็กไปจนถึง T-Rex จุดเด่นคือกรงเล็บและฟันที่แหลมคม</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-glass p-4 h-100 hover-lift">
+                    <div class="mb-3 display-4">🌿</div>
+                    <h4 class="text-success">Sauropods</h4>
+                    <p class="text-white small">ยักษ์ใหญ่คอยาว (Long-necked Giants) สัตว์บกที่ใหญ่ที่สุดในโลก กินพืชเป็นอาหารและอาศัยอยู่เป็นฝูง</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-glass p-4 h-100 hover-lift">
+                    <div class="mb-3 display-4">🛡️</div>
+                    <h4 class="text-info">Thyreophora</h4>
+                    <p class="text-white small">ไดโนเสาร์หุ้มเกราะ (Armored Dinosaurs) เช่น Stegosaurus และ Ankylosaurus มีแผ่นกระดูกและหนามเพื่อป้องกันตัว</p>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mb-5">
+         <div class="col-lg-8">
+            <div class="card-glass p-4">
+                <h3 class="section-title mb-4">📰 ข่าวการค้นพบล่าสุด</h3>
+                
+                <div class="d-flex gap-3 mb-4">
+                    <div class="rounded bg-secondary d-flex align-items-center justify-content-center" style="min-width:80px; height:80px;">🦴</div>
+                    <div>
+                        <h5 class="mb-1 text-success">พบฟอสซิล "Titanosaur" สายพันธุ์ใหม่ในอาร์เจนตินา</h5>
+                        <p class="small text-white mb-0">12 พฤศจิกายน 2024 • นักธรณีวิทยาขุดพบกระดูกขาขนาดมหึมา คาดเป็นไดโนเสาร์ที่หนักกว่า 70 ตัน</p>
+                    </div>
+                </div>
+                
+                <div class="soft-divider"></div>
+                
+                <div class="d-flex gap-3 mb-4">
+                    <div class="rounded bg-secondary d-flex align-items-center justify-content-center" style="min-width:80px; height:80px;">🥚</div>
+                    <div>
+                        <h5 class="mb-1 text-success">ไข่ไดโนเสาร์สภาพสมบูรณ์พร้อมตัวอ่อน</h5>
+                        <p class="small text-white mb-0">20 ตุลาคม 2024 • การค้นพบที่หายากยิ่งในจีน เผยให้เห็นท่าทางการนอนขดตัวคล้ายนกของตัวอ่อน Oviraptorosaur</p>
+                    </div>
+                </div>
+
+                <div class="soft-divider"></div>
+
+                <div class="d-flex gap-3">
+                    <div class="rounded bg-secondary d-flex align-items-center justify-content-center" style="min-width:80px; height:80px;">☄️</div>
+                    <div>
+                        <h5 class="mb-1 text-success">ทฤษฎีใหม่: อุกกาบาตอาจไม่ใช่สาเหตุเดียว?</h5>
+                        <p class="small text-white mb-0">5 ตุลาคม 2024 • หลักฐานใหม่ชี้ว่าภูเขาไฟระเบิดในอินเดียอาจทำให้ระบบนิเวศอ่อนแอก่อนอุกกาบาตพุ่งชน</p>
+                    </div>
+                </div>
+
+            </div>
+         </div>
+
+         <div class="col-lg-4">
+            <div class="card-glass p-4 h-100 text-center d-flex flex-column justify-content-center align-items-center">
+                <h3 class="mb-3">พร้อมออกเดินทางหรือยัง?</h3>
+                <p class="text-white mb-4">เลือกเส้นทางการสำรวจของคุณ ไม่ว่าจะเป็นทำเนียบสายพันธุ์ หรือห้องจัดแสดงหุ่นจำลอง 3 มิติ</p>
+                <div class="d-grid gap-2 w-100">
+                    <a href="#/species" class="btn btn-neo">🦖 ดูสายพันธุ์ทั้งหมด</a>
+                    <a href="#/gallery" class="btn btn-outline-light">🧊 แกลเลอรี 3 มิติ</a>
+                </div>
+            </div>
+         </div>
+      </div>
+    </section>
+
+    <section id="view-species" data-view>
+      <div class="mb-3">
+        <h2 class="section-title mb-0" id="species-title">สายพันธุ์ทั้งหมด</h2>
+      </div>
+      <p class="text-white mb-4">
+        ข้อมูลจากการขุดค้นทางธรณีวิทยา รวมรวบสายพันธุ์ทั้งนักล่าและยักษ์ใหญ่กินพืชไว้ในที่เดียว
+      </p>
+      <div class="card-glass p-3" style="background: #292524;">
+        <div id="all-species-grid" class="row g-4 p-2"></div>
+      </div>
+    </section>
+
+    <section id="view-detail" data-view>
+      <div id="detail-wrap" class="row g-4"></div>
+    </section>
+
+    <section id="view-timeline" data-view>
+      <h2 class="section-title mb-3">ไทม์ไลน์ทางธรณีกาล</h2>
+      <p class="text-white mb-4">คลิกที่การ์ดเพื่อดูข้อมูลเจาะลึกของแต่ละยุคสมัย</p>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card-glass p-4 h-100" onclick="go('#/timeline/triassic')">
+            <div class="dino-figure mb-3">
+              <img src="https://media.sciencephoto.com/image/c0335833/800wm/C0335833-Triassic_Period,_Illustration.jpg" alt="Triassic Period">
+            </div>
+            <h4>Triassic (ไทรแอสซิก)</h4>
+            <p class="text-opacity-75">กำเนิดไดโนเสาร์ ทวีปยังรวมเป็นพันเจีย สภาพอากาศร้อนและแห้งแล้ง</p>
+            <span class="chip text-warning">≈ 252–201 ล้านปีก่อน</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-4 h-100" onclick="go('#/timeline/jurassic')">
+            <div class="dino-figure mb-3">
+              <img src="https://media.sciencephoto.com/image/e4460683/800wm/E4460683-Jurassic_dinosaurs,_artwork.jpg" alt="Jurassic Period">
+            </div>
+            <h4>Jurassic (จูราสซิก)</h4>
+            <p class="text-opacity-75">ยุคทองของยักษ์ใหญ่ ซอโรพอดครองแผ่นดิน ป่าดิบชื้นแพร่กระจายไปทั่ว</p>
+            <span class="chip text-success">≈ 201–145 ล้านปีก่อน</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-4 h-100" onclick="go('#/timeline/cretaceous')">
+            <div class="dino-figure mb-3">
+              <img src="https://i.natgeofe.com/n/9c56eafe-8285-4eef-b0d4-e12473098742/907_2x1.jpg" alt="Cretaceous Period">
+            </div>
+            <h4>Cretaceous (ครีเทเชียส)</h4>
+            <p class="text-opacity-75">วิวัฒนาการขั้นสุดยอดของนักล่า และจุดจบจากอุกกาบาตล้างเผ่าพันธุ์</p>
+            <span class="chip text-danger">≈ 145–66 ล้านปีก่อน</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-timeline-detail" data-view>
+        <div class="mb-3">
+            <a href="#/timeline" class="btn btn-outline-light btn-sm">← กลับไปหน้าไทม์ไลน์</a>
+        </div>
+        <div id="timeline-detail-content"></div>
+    </section>
+
+    <section id="view-gallery" data-view>
+      <h2 class="section-title mb-3">แบบจำลองไดโนเสาร์ 3 มิติ </h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Tyrannosaurus Rex" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/497a7f22e77a4678b173fb511bea6064/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">T. rex</span><span class="chip" style="color:var(--danger)">Carnivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Triceratops Horridus" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/cb7bad2c70dc4748a9c58ef9db5fce5e/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Triceratops</span><span class="chip" style="color:var(--accent)">Herbivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Stegosaurus Armatus" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/81753a59a74145d59f99ee304f9f34e4/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Stegosaurus</span><span class="chip" style="color:var(--accent)">Herbivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Velociraptor mongoliensis" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/906e0a2884d74cbd80c756de8484b1fe/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Velociraptor</span><span class="chip" style="color:var(--danger)">Carnivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Spinosaurus Hybrid" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/8ea0b193759f4060a3245bc48c3fd6e2/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Spinosaurus</span><span class="chip" style="color:var(--danger)">Carnivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Allosaurus" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/a532ce4658704e53bd929bc2316ecba6/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Allosaurus</span><span class="chip" style="color:var(--danger)">Carnivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Carnotaurus" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/ab2350d7cd7e4727ad6052edfceb35c9/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Carnotaurus</span><span class="chip" style="color:var(--danger)">Carnivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Brachiosaurus Altithorax" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/c987f8cbfb7a4657af49eaa0998addec/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Brachiosaurus</span><span class="chip" style="color:var(--accent)">Herbivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Ankylosaurus" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/49c55dc2e9b249adac428d2fafa8b089/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Ankylosaurus</span><span class="chip" style="color:var(--accent)">Herbivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Parasaurolophus" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/e4a6acc4cb50404c9f13d83c634175e5/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Parasaurolophus</span><span class="chip" style="color:var(--accent)">Herbivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Dilophosaurus" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/dc21bcff795d4bfda861208e9099ff6c/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Dilophosaurus</span><span class="chip" style="color:var(--danger)">Carnivore</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-glass p-3 dino-card">
+            <div class="dino-figure mb-2" style="height: 250px;">
+              <iframe title="Diplodocus" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/36d41907ad5d4c01bc0ca6a7fdd67efb/embed?ui_theme=dark&autoplay=1&autostart=1" style="width: 100%; height: 100%;"></iframe>
+            </div>
+            <div class="d-flex justify-content-between"><span class="chip">Diplodocus</span><span class="chip" style="color:var(--accent)">Herbivore</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-members" data-view>
+      <h2 class="section-title mb-3">ทีมนักสำรวจ</h2>
+      <div id="members-grid" class="row g-4"></div>
+    </section>
+
+    <section id="view-member-detail" data-view>
+      <div class="mb-3">
+        <a href="#/members" class="btn btn-outline-light btn-sm">← กลับไปหน้ารวม</a>
+      </div>
+      <div id="member-detail-wrap" class="row g-4"></div>
+    </section>
+
+  </main>
+
+  <footer class="main-footer pt-5 pb-3">
+    <div class="container">
+      <div class="row g-4 justify-content-between">
+        <div class="col-lg-4 col-md-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+             <span style="font-size: 2rem;">🦖</span>
+             <h3 class="brand mb-0 text-white">DinoVerse</h3>
+          </div>
+          <p class="text-secondary small" style="line-height: 1.8;">
+            สารานุกรมดิจิทัลที่รวบรวมเรื่องราวของสิ่งมีชีวิตดึกดำบรรพ์ 
+            จากยุคไทรแอสซิกสู่จุดจบในยุคครีเทเชียส 
+            จัดทำขึ้นเพื่อการศึกษาและการเรียนรู้ผ่านเทคโนโลยีเว็บสมัยใหม่
+          </p>
+          <div class="d-flex gap-2 mt-3">
+             <a href="#" class="footer-social-btn">f</a>
+             <a href="#" class="footer-social-btn">ig</a>
+             <a href="#" class="footer-social-btn">yt</a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h5 class="footer-title">🗺️ แผนที่เว็บไซต์</h5>
+          <ul class="list-unstyled">
+            <li><a href="#/" class="footer-link">🏠 หน้าหลัก (Home)</a></li>
+            <li><a href="#/species" class="footer-link">🦕 สายพันธุ์ (Species)</a></li>
+            <li><a href="#/timeline" class="footer-link">⏳ ไทม์ไลน์ (Timeline)</a></li>
+            <li><a href="#/gallery" class="footer-link">🧊 แกลเลอรี 3 มิติ (3D Model)</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h5 class="footer-title">🎓 โครงการศึกษา</h5>
+          <ul class="list-unstyled text-secondary small">
+            <li class="mb-3 d-flex gap-2">
+              <span class="text-warning">🏫</span> 
+              <span>
+                <strong>คณะเทคโนโลยีสารสนเทศ</strong><br>
+                มหาวิทยาลัยศรีปทุม (SPU)
+              </span>
+            </li>
+            <li class="mb-3 d-flex gap-2">
+              <span class="text-warning">👥</span> 
+              <span>
+                <strong>วิชา:</strong> ICT12267<br>
+                การพัฒนาเว็บแอปพลิเคชันส่วนติดต่อกับผู้ใช้
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="soft-divider mt-5 mb-3"></div>
+      <div class="row align-items-center">
+        <div class="col-md-6 text-center text-md-start">
+          <p class="small text-muted mb-0">
+            © 2025 DinoVerse Project. All rights reserved.<br>
+            <span style="font-size: 0.8rem; opacity: 0.6;">Designed with passion by SPU Students.</span>
+          </p>
+        </div>
+        <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+           <span class="chip text-muted" style="background: rgba(255,255,255,0.05);">Version 1.0.0</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://www.spu.ac.th/fac/informatics/" target="_blank" class="floating-logo" title="School of Information Technology, SPU">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQImfvZuiYqR-UeOxPBB_jTNMroyn83SriMQ&s" alt="SPU SIT Logo">
+  </a>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+          crossorigin="anonymous"></script>
+
+  <script>
+    // -------- SPECIES DATA (ฐานข้อมูลไดโนเสาร์) --------
+    const SPECIES = [
+      {
+        id:"trex",
+        name:"Tyrannosaurus rex",
+        thai:"ไทแรนโนซอรัส เร็กซ์",
+        sci:"Tyrannosaurus rex",
+        image: "https://media.istockphoto.com/id/967254666/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%81%E0%B8%AD%E0%B8%9A-tyrannosaurus-rex-%E0%B8%89%E0%B8%B2%E0%B8%81-3-%E0%B8%A1%E0%B8%B4%E0%B8%95%E0%B8%B4.jpg?s=612x612&w=0&k=20&c=S3Nzmi_4McBsE0-zmS441tR9vogiz6e_1DOOXmUegJo=",
+        period:"ครีเทเชียสตอนปลาย (68–66 ล้านปีก่อน)",
+        diet:"กินเนื้อ (Carnivore)",
+        diet_detail: "สัตว์กินพืชขนาดใหญ่ เช่น Edmontosaurus, Triceratops รวมถึงการกินซากสัตว์ (Scavenging)",
+        length:"12.3 – 13 เมตร",
+        weight:"8.4 – 14 ตัน",
+        speed: "27 – 40 กม./ชม.",
+        enemies: "ไม่มี (Apex Predator) แต่อาจต่อสู้กันเอง",
+        discovery: "ค้นพบครั้งแรกปี 1902 โดย Barnum Brown ที่ Hell Creek Formation, รัฐมอนทานา สหรัฐอเมริกา",
+        summary:"'ราชันย์แห่งไดโนเสาร์' หรือ T.rex คือนักล่าที่มีชื่อเสียงที่สุดตลอดกาล มันมีกะโหลกศีรษะขนาดมหึมาและแรงกัดที่รุนแรงที่สุดในบรรดาสัตว์บกทุกชนิดที่เคยมีมา (ประมาณ 35,000–57,000 นิวตัน) ฟันของมันหนาและแข็งแรงจนสามารถบดขยี้กระดูกเหยื่อได้ (Bone-crushing bite) นอกจากนี้ T.rex ยังมีสมองขนาดใหญ่และประสาทสัมผัสที่ดีเยี่ยม โดยเฉพาะการดมกลิ่นและการมองเห็นแบบ Binocular vision ที่ช่วยให้กะระยะได้อย่างแม่นยำ แม้จะมีแขนที่ดูเล็กเมื่อเทียบกับลำตัว แต่กล้ามเนื้อแขนของมันแข็งแรงมาก",
+        features:["แรงกัดมหาศาลบดกระดูกได้","สายตาดีเยี่ยมมองเห็นภาพ 3 มิติ (Binocular Vision)","ฟันหนาและยาวคล้ายกล้วยหอม","ประสาทรับกลิ่นดีกว่าสุนัข 100 เท่า"],
+        habitat:"ป่าโปร่งกึ่งร้อนชื้น (Subtropical), ที่ราบลุ่มแม่น้ำ และป่าสนในทวีปอเมริกาเหนือ",
+        behavior:"เป็นสัตว์สันโดษที่หวงถิ่นรุนแรง แต่ทฤษฎีใหม่ๆ บ่งชี้ว่าพวกมันอาจล่าเป็นครอบครัว โดยตัวโตเต็มวัยจะซุ่มโจมตี ส่วนตัววัยรุ่นที่ว่องไวกว่าทำหน้าที่ต้อนเหยื่อ T.rex มักใช้วิธีซุ่มโจมตีแล้วพุ่งเข้ากัดจุดตายด้วยความรุนแรงในครั้งเดียว",
+        fun_fact:"แขนของ T.rex ไม่ได้ไร้ประโยชน์อย่างที่คิด! มันสามารถยกน้ำหนักได้ถึง 200 กิโลกรัมต่อข้าง และอาจใช้ช่วยพยุงตัวตอนลุกยืน หรือใช้จับคู่ผสมพันธุ์",
+        color:"#ef4444", 
+      },
+      {
+        id:"triceratops",
+        name:"Triceratops",
+        thai:"ไทรเซอราทอปส์",
+        sci:"Triceratops horridus",
+        image:"https://live.staticflickr.com/65535/51549914154_e78915f549_b.jpg",
+        period:"ครีเทเชียสตอนปลาย (68–66 ล้านปีก่อน)",
+        diet:"กินพืช (Herbivore)",
+        diet_detail: "พืชใบแข็ง, ปรง (Cycads), และพืชตระกูลปาล์มในระดับต่ำ",
+        length:"8 – 9 เมตร",
+        weight:"6 – 12 ตัน",
+        speed: "32 กม./ชม. (ในการพุ่งชน)",
+        enemies: "Tyrannosaurus rex",
+        discovery: "ค้นพบครั้งแรกปี 1887 ที่รัฐโคโลราโด โดย Othniel Charles Marsh (ตอนแรกเข้าใจผิดว่าเป็นควายไบซันยักษ์)",
+        summary:"ยักษ์ใหญ่สามเขาที่เป็นสัญลักษณ์แห่งการป้องกันตัว มันคือคู่ปรับตลอดกาลของ T.rex ด้วยเขาขนาดยักษ์ 2 อันเหนือตาที่ยาวกว่า 1 เมตร และเขาจมูกสั้นๆ อีก 1 อัน จุดเด่นสำคัญคือ 'แผงคอ' (Frill) ที่เป็นแผ่นกระดูกทึบขนาดใหญ่คลุมส่วนคอ ซึ่งต่างจากไดโนเสาร์ชนิดอื่นที่มีรูบนแผงคอ นอกจากใช้ป้องกันตัวแล้ว แผงคอนี้อาจมีสีสันสดใสเพื่อใช้ดึงดูดคู่ครองหรือข่มขู่ศัตรู ปากของมันมีลักษณะคล้ายจะงอยนกแก้วที่แข็งแรงมาก เหมาะสำหรับตัดพืชที่มีใยเหนียว",
+        features:["เขาคู่หน้ายาวกว่า 1 เมตร","แผงคอกระดูกทึบแข็งแรง (Solid Frill)","ฟันเรียงตัวแบบแบตเตอรี่ (Dental Battery)","จมูกและจะงอยปากแข็งแรง"],
+        habitat:"ป่าไม้พุ่ม, ทุ่งหญ้า และที่ราบชายฝั่งในทวีปอเมริกาเหนือ",
+        behavior:"อาศัยอยู่รวมกันเป็นฝูงขนาดเล็กเพื่อป้องกันตัวจากนักล่า เมื่อถูกคุกคาม พวกมันอาจยืนเรียงหน้ากระดานหันเขาเข้าหาศัตรู หรือใช้การพุ่งชนด้วยความเร็วสูงเหมือนแรด การต่อสู้กันเองภายในฝูงมักใช้เขาเกี่ยวกันเพื่อประลองกำลังมากกว่าการแทงให้ตาย",
+        fun_fact:"ฟันของไทรเซอราทอปส์มีมากถึง 800 ซี่! เรียงตัวซ้อนกันเป็นชุดๆ (Dental Battery) เมื่อฟันชุดบนสึกหรอ ฟันชุดใหม่จะดันขึ้นมาแทนที่ทันทีตลอดชีวิต",
+        color:"#d97706",
+      },
+      {
+        id:"velociraptor",
+        name:"Velociraptor",
+        thai:"เวลอซิแรปเตอร์",
+        sci:"Velociraptor mongoliensis",
+        image:"https://www.sideshow.com/cdn-cgi/image/quality=90,f=auto/https://www.sideshow.com/storage/product-images/913126/velociraptor-male_jurassic-park_gallery_65c6c2fe336f5.jpg",
+        period:"ครีเทเชียสตอนปลาย (75–71 ล้านปีก่อน)",
+        diet:"กินเนื้อ (Carnivore)",
+        diet_detail: "สัตว์เลื้อยคลานขนาดเล็ก, สัตว์เลี้ยงลูกด้วยนม, และไดโนเสาร์กินพืชขนาดเล็กเช่น Protoceratops",
+        length:"2.07 เมตร (ขนาดจริงเท่าไก่งวง)",
+        weight:"15 – 19 กิโลกรัม",
+        speed: "64 กม./ชม.",
+        enemies: "ไม่มีศัตรูโดยตรง แต่อาจถูกล่าโดยนักล่าขนาดใหญ่กว่า",
+        discovery: "ค้นพบปี 1923 ในทะเลทรายโกบี ประเทศมองโกเลีย โดย Peter Kaisen",
+        summary:"ไดโนเสาร์นักล่าขนาดเล็กที่มีความฉลาดและว่องไวเป็นเลิศ แม้ภาพจำในภาพยนตร์จะตัวใหญ่เท่ามนุษย์ แต่ความจริงแล้ว Velociraptor มีขนาดเพียงไก่งวงหรือสุนัขขนาดกลางเท่านั้น สิ่งที่น่ากลัวที่สุดคือ 'กรงเล็บสังหาร' (Sickle Claw) รูปเคียวโค้งงอที่นิ้วเท้าที่ 2 ซึ่งสามารถพับเก็บขึ้นด้านบนกระหม่อมและกางออกเพื่อแทงเหยื่อเมื่อโจมตี หลักฐานทางฟอสซิลยืนยันชัดเจนว่ามันมี 'ขนนก' ปกคลุมทั่วร่างกาย และมีปุ่มกระดูกที่แขนสำหรับยึดเกาะขนปีก",
+        features:["กรงเล็บเท้าสังหารรูปเคียว","มีขนนกปกคลุมร่างกาย","กะโหลกเรียวยาวและฟันคมกริบ","หางยาวแข็งช่วยทรงตัวขณะเลี้ยว"],
+        habitat:"ทะเลทรายและพื้นที่กึ่งแห้งแล้ง (Semi-arid) ในมองโกเลียและจีน",
+        behavior:"เป็นนักล่าที่ใช้ความเร็วและการซุ่มโจมตี มักกระโดดเกาะหลังเหยื่อแล้วใช้กรงเล็บเท้าเจาะเข้าที่คอหลอดลม มีทฤษฎีว่าพวกมันอาจล่าเป็นฝูง (Pack Hunting) เพื่อล้มเหยื่อที่ใหญ่กว่าตัวเอง แต่ยังเป็นที่ถกเถียงในหมู่นักวิจัย",
+        fun_fact:"Velociraptor ในหนัง Jurassic Park จริงๆ แล้วมีต้นแบบมาจากไดโนเสาร์ที่ชื่อว่า 'Deinonychus' ซึ่งตัวใหญ่กว่า แต่ผู้สร้างหนังเลือกใช้ชื่อ Velociraptor เพราะฟังดูน่ากลัวกว่า!",
+        color:"#f87171",
+      },
+      {
+        id:"brachiosaurus",
+        name:"Brachiosaurus",
+        thai:"บรากิโอซอรัส",
+        sci:"Brachiosaurus altithorax",
+        image:"https://a-z-animals.com/media/2022/05/Brachiosaurus.jpg",
+        period:"จูราสซิกตอนปลาย (154–153 ล้านปีก่อน)",
+        diet:"กินพืช (Herbivore)",
+        diet_detail: "ใบไม้จากยอดไม้สูง เช่น สน (Conifers), แปะก๊วย และเฟิร์นไม้ยืนต้น",
+        length:"22 – 26 เมตร",
+        weight:"28 – 58 ตัน",
+        speed: "ช้ามาก (เดินต้วมเตี้ยม)",
+        enemies: "นักล่าขนาดยักษ์อย่าง Allosaurus (โจมตีเฉพาะลูกอ่อนหรือตัวป่วย)",
+        discovery: "ค้นพบปี 1900 ที่หุบเขาแม่น้ำโคโลราโด โดย Elmer S. Riggs",
+        summary:"ยักษ์ใหญ่คอยาวที่มีรูปร่างโดดเด่นไม่เหมือนใคร ด้วยขาหน้าที่ยาวกว่าขาหลังอย่างชัดเจน ทำให้ลำตัวของมันลาดเอียงและคอตั้งชันขึ้นโดยธรรมชาติคล้ายยีราฟ ท่าทางนี้ช่วยให้มันสามารถกินใบไม้จากยอดไม้ที่สูงที่สุดในป่าซึ่งไดโนเสาร์ชนิดอื่นเอื้อมไม่ถึง หัวของมันมีกะโหลกที่ยกสูงและมีรูจมูกขนาดใหญ่อยู่ด้านบนกระหม่อม เป็นหนึ่งในไดโนเสาร์ที่หนักที่สุดและสูงที่สุดในประวัติศาสตร์โลก",
+        features:["ขาหน้ายาวกว่าขาหลัง (High Shoulders)","คอตั้งชันสูงกว่า 12 เมตร","ฟันรูปช้อน (Spoon-shaped teeth)","รูจมูกอยู่กลางกระหม่อม"],
+        habitat:"ที่ราบลุ่มแม่น้ำและป่าสนในทวีปอเมริกาเหนือ",
+        behavior:"ใช้ชีวิตอย่างเชื่องช้า กินอาหารเกือบตลอดเวลาเพื่อรักษาระดับพลังงานสำหรับร่างกายที่มหึมา มักอาศัยอยู่เป็นฝูงและเดินทางอพยพไปเรื่อยๆ เมื่อแหล่งอาหารหมด ด้วยขนาดตัวที่ใหญ่โตทำให้ตัวเต็มวัยแทบไม่มีศัตรูตามธรรมชาติกล้าเข้าใกล้",
+        fun_fact:"ในอดีตนักวิทยาศาสตร์เคยเชื่อว่ารูจมูกบนหัวมีไว้สำหรับหายใจใต้น้ำ แต่ปัจจุบันพบว่าแรงดันน้ำที่ความลึกระดับนั้นจะบีบปอดจนมันหายใจไม่ออก มันจึงเป็นสัตว์บก 100%",
+        color:"#65a30d",
+      },
+      {
+        id:"stegosaurus",
+        name:"Stegosaurus",
+        thai:"สเตโกซอรัส",
+        sci:"Stegosaurus stenops",
+        image:"https://dinosaurland.es/wp-content/uploads/elementor/thumbs/dinosaurio-stegosaurus-dinosaurland-r1n5jvppvyq7ahgc8fksp9wkzqen5sq9cnu2l3cav4.jpg",
+        period:"จูราสซิกตอนปลาย (155–150 ล้านปีก่อน)",
+        diet:"กินพืช (Herbivore)",
+        diet_detail: "พืชระดับต่ำ, มอส, เฟิร์น และหญ้าหางม้า",
+        length:"9 เมตร",
+        weight:"5 – 7 ตัน",
+        speed: "7 กม./ชม.",
+        enemies: "Allosaurus, Ceratosaurus",
+        discovery: "ค้นพบปี 1877 ที่มอร์ริสันฟอร์เมชัน โดย Othniel Charles Marsh",
+        summary:"ไดโนเสาร์ที่มีเอกลักษณ์ที่สุดชนิดหนึ่ง ด้วยแผ่นกระดูก (Plates) รูปว่าวเรียงเป็นสองแถวตลอดแนวสันหลัง แผ่นกระดูกนี้ไม่ได้เชื่อมต่อกับกระดูกสันหลังโดยตรงแต่อยู่บนผิวหนัง เชื่อว่ามีไว้สำหรับควบคุมอุณหภูมิร่างกายหรือเปลี่ยนสีเพื่อขู่ศัตรู ที่ปลายหางมีอาวุธร้ายแรงคือ 'แท่งหนาม' 4 แท่งยาวประมาณ 60-90 ซม. ซึ่งมันสามารถเหวี่ยงใส่ศัตรูด้วยความแม่นยำสูง",
+        features:["แผ่นกระดูกหลังรูปว่าว 17-22 แผ่น","หนามหาง 4 แท่ง (Thagomizer)","หัวขนาดเล็กมากเมื่อเทียบกับตัว","ขาหน้าสั้นกว่าขาหลังมาก"],
+        habitat:"ป่าโปร่งและที่ราบกึ่งแห้งแล้ง",
+        behavior:"เป็นสัตว์กินพืชที่เชื่องช้าและสมองเล็กมาก (เท่าผลวอลนัท) แต่มันมีสัญชาตญาณการป้องกันตัวที่ดีเยี่ยม เมื่อถูกโจมตี มันจะหันข้างให้ศัตรูเพื่อโชว์แผ่นหลังและเหวี่ยงหางที่มีหนามเข้าใส่คู่ต่อสู้",
+        fun_fact:"หนามที่หางของมันมีชื่อเรียกว่า 'Thagomizer' ซึ่งชื่อนี้มาจากการ์ตูนแก๊กเรื่อง The Far Side ในปี 1982 และนักวิทยาศาสตร์ก็ยอมรับมาใช้เป็นชื่อทางการจริงๆ!",
+        color:"#84cc16",
+      },
+      {
+        id:"spinosaurus",
+        name:"Spinosaurus",
+        thai:"สไปโนซอรัส",
+        sci:"Spinosaurus aegyptiacus",
+        image:"https://images.fineartamerica.com/images/artworkimages/medium/2/1-artwork-of-a-spinosaurus-dinosaur-mark-garlick.jpg",
+        period:"ครีเทเชียส (99–93.5 ล้านปีก่อน)",
+        diet:"กินเนื้อ/ปลา (Piscivore/Carnivore)",
+        diet_detail: "ปลาขนาดยักษ์ (Onchopristis), จระเข้, และไดโนเสาร์ขนาดเล็ก",
+        length:"14 – 15 เมตร (ยาวที่สุดในกลุ่มกินเนื้อ)",
+        weight:"7.4 – 20 ตัน",
+        speed: "ว่ายน้ำเร็ว / บนบกช้า",
+        enemies: "Carcharodontosaurus (แข่งกันแย่งอาหาร)",
+        discovery: "ค้นพบปี 1912 ในอียิปต์ โดย Ernst Stromer (ฟอสซิลต้นแบบถูกทำลายในสงครามโลกครั้งที่ 2)",
+        summary:"นักล่าที่ลึกลับและแปลกประหลาดที่สุด มันคือไดโนเสาร์กินเนื้อที่ใหญ่ที่สุดในโลก (ยาวกว่า T.rex) แต่มีวิถีชีวิตแบบกึ่งน้ำ (Semi-aquatic) จุดเด่นคือ 'กระโดงหลัง' ขนาดมหึมาที่สูงถึง 1.6 เมตร ซึ่งเกิดจากกระดูกสันหลังที่ยืดดวยาว คาดว่าใช้เพื่ออวดสาวหรือควบคุมอุณหภูมิ กะโหลกของมันยาวแคบเหมือนจระเข้ ฟันเป็นรูปกรวยเหมาะสำหรับจับปลาที่ลื่นไหล แขนแข็งแรงและมีกรงเล็บใหญ่",
+        features:["กระโดงหลังสูงคล้ายใบเรือ","ปากยาวแคบคล้ายจระเข้","หางแบนกว้างคล้ายใบพาย","กระดูกหนาแน่นช่วยในการดำน้ำ"],
+        habitat:"ระบบนิเวศป่าชายเลนและแม่น้ำขนาดใหญ่ในแอฟริกาเหนือ (ยุคนั้นเขียวชอุ่ม)",
+        behavior:"ใช้เวลาส่วนใหญ่ในน้ำเพื่อล่าปลายักษ์และจระเข้ มันสามารถว่ายน้ำได้ดีด้วยหางที่ทรงพลัง เซนเซอร์ที่ปลายจมูกช่วยตรวจจับแรงดันน้ำจากเหยื่อ แต่อาจขึ้นบกมาเพื่อวางไข่หรือล่าสัตว์อื่นเมื่ออาหารในน้ำขาดแคลน",
+        fun_fact:"ฟอสซิลหางที่ค้นพบใหม่ในปี 2020 เปลี่ยนความเข้าใจของเราไปตลอดกาล มันยืนยันว่า Spinosaurus มีหางแบนเหมือนใบพาย ซึ่งเป็นหลักฐานชิ้นสำคัญว่ามันคือไดโนเสาร์ตัวแรกที่ว่ายน้ำได้จริง!",
+        color:"#f97316",
+      },
+      {
+        id:"allosaurus",
+        name:"Allosaurus",
+        thai:"อัลโลซอรัส",
+        sci:"Allosaurus fragilis",
+        image:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhOv0Hgq3NUsIil2HEvf2QobBVMs5sivQEsZnmIenbPWaW1TJ5gddq1IBKyYFZhmKchPU1iNmlTbO-pkTY3CUGlBUgmFLIeysNxKZjcGBiUYTHzKtqw2q5zHNgFGTzGykf5uHVqfdwlTpFZ/s1600/6c562e29ed74c6258335869f17a7e648.jpg",
+        period:"จูราสซิกตอนปลาย (155–145 ล้านปีก่อน)",
+        diet:"กินเนื้อ (Carnivore)",
+        diet_detail: "Stegosaurus, Diplodocus (ลูกอ่อน), Camptosaurus",
+        length:"8.5 – 9.7 เมตร",
+        weight:"2.3 ตัน",
+        speed: "30 – 55 กม./ชม.",
+        enemies: "Torvosaurus (คู่แข่ง)",
+        discovery: "ค้นพบปี 1877 ในอเมริกาเหนือ โดย Othniel Charles Marsh",
+        summary:"ฉายา 'สิงโตแห่งยุคจูราสซิก' มันคือนักล่าที่อยู่จุดสูงสุดของห่วงโซ่อาหารในยุคนั้น Allosaurus มีความสมดุลระหว่างขนาดและความคล่องตัวที่ดีเยี่ยม มีกรงเล็บมือขนาดใหญ่ 3 นิ้วที่ใช้ตะปบและล็อกเหยื่อ จุดเด่นคือ 'สันกระดูกคู่' เหนือดวงตาที่ทำให้หน้าตาดูดุร้าย ขากรรไกรของมันสามารถอ้าได้กว้างมากอย่างไม่น่าเชื่อ",
+        features:["กรงเล็บมือ 3 นิ้วขนาดใหญ่","สันกระดูกคู่เหนือดวงตา","ขากรรไกรอ้าได้กว้างพิเศษ","ฟันแบบเลื่อยคมกริบ"],
+        habitat:"ทุ่งราบกว้างใหญ่และป่าโปร่งในอเมริกาเหนือ",
+        behavior:"Allosaurus มีแรงกัดไม่มากนักเมื่อเทียบกับ T.rex แต่มันใช้วิธีล่าแบบ 'Hatchet movement' คืออ้าปากกว้างแล้วใช้กรามบนสับลงไปที่เหยื่อเหมือนขวาน เพื่อสร้างบาดแผลฉกรรจ์ให้เหยื่อเสียเลือดจนตาย นอกจากนี้ยังมีการค้นพบหลักฐานว่าพวกมันอาจล่าเป็นกลุ่มเพื่อล้มซอโรพอดขนาดยักษ์",
+        fun_fact:"กระดูกของ Allosaurus ถูกค้นพบจำนวนมากและสมบูรณ์ที่สุดในบรรดาไดโนเสาร์กินเนื้อขนาดใหญ่ ทำให้เรารู้จักและเข้าใจชีวิตของมันละเอียดกว่าไดโนเสาร์ชนิดอื่นมาก",
+        color:"#b91c1c",
+      },
+      {
+        id:"carnotaurus",
+        name:"Carnotaurus",
+        thai:"คาร์โนทอรัส",
+        sci:"Carnotaurus sastrei",
+        image:"https://preview.redd.it/7yfed9tczpq41.jpg?auto=webp&s=d0dbda1a21b0b1455aa3c2ed3f8aa3e36e05ee6f",
+        period:"ครีเทเชียสตอนปลาย (72–69.9 ล้านปีก่อน)",
+        diet:"กินเนื้อ (Carnivore)",
+        diet_detail: "ไดโนเสาร์กินพืชขนาดกลางและเล็ก",
+        length:"7.5 – 9 เมตร",
+        weight:"1.35 – 2.1 ตัน",
+        speed: "48 – 56 กม./ชม. (หนึ่งในนักล่าที่เร็วที่สุด)",
+        enemies: "ไม่มีในถิ่นที่อยู่ของมัน",
+        discovery: "ค้นพบปี 1984 ที่อาร์เจนตินา โดย José Bonaparte",
+        summary:"เจ้าของฉายา 'วัวกินเนื้อ' (Meat-eating Bull) จากเขาคู่แปลกประหลาดที่งอกออกมาเหนือคิ้ว ซึ่งไม่พบในไดโนเสาร์กินเนื้อชนิดอื่น Carnotaurus มีรูปร่างที่วิวัฒนาการมาเพื่อความเร็วสูงสุด ขาของมันยาวและแข็งแรงมาก แต่แขนกลับเล็กจิ๋วจนแทบมองไม่เห็นและใช้งานไม่ได้เลย (เล็กกว่า T.rex เสียอีก) กะโหลกสั้นและลึก ทำให้มีแรงกัดที่รวดเร็ว",
+        features:["เขาคู่แหลมเหนือดวงตา","แขนเล็กจิ๋ว (Vestigial arms)","ผิวหนังมีปุ่มกระดูกเรียงแถว","ขายาวแข็งแรง"],
+        habitat:"ทุ่งราบแห้งแล้งและป่าโปร่งในทวีปอเมริกาใต้",
+        behavior:"เป็นนักล่าแบบ Sprinter คือเน้นการวิ่งไล่กวดด้วยความเร็วสูงในระยะสั้น มันใช้หางที่แข็งแรงช่วยทรงตัวขณะเลี้ยวและวิ่ง เขาบนหัวอาจใช้ในการต่อสู้กันเองโดยการเอาหัวดันกัน หรือใช้ข่มขู่ศัตรู",
+        fun_fact:"เราค้นพบฟอสซิลผิวหนังของมันที่สมบูรณ์มาก ทำให้รู้ว่าผิวของมันขรุขระและมีปุ่มกระดูก (Osteoderms) เรียงเป็นแถวคล้ายจระเข้ ไม่ได้มีขนเหมือนไดโนเสาร์กินเนื้อสายพันธุ์อื่น",
+        color:"#991b1b",
+      },
+      {
+        id:"ankylosaurus",
+        name:"Ankylosaurus",
+        thai:"แองคิโลซอรัส",
+        sci:"Ankylosaurus magniventris",
+        image:"https://shop.minimuseum.com/cdn/shop/files/ankylosmall_2128x.jpg?v=1715896234",
+        period:"ครีเทเชียสตอนปลาย (68–66 ล้านปีก่อน)",
+        diet:"กินพืช (Herbivore)",
+        diet_detail: "พืชระดับพื้นดิน, เฟิร์น, และไม้พุ่มเตี้ย",
+        length:"6 – 8 เมตร",
+        weight:"4.8 – 8 ตัน",
+        speed: "6 – 10 กม./ชม.",
+        enemies: "Tyrannosaurus rex (แต่มักจะหลีกเลี่ยง)",
+        discovery: "ค้นพบปี 1906 ที่ Hell Creek Formation โดย Barnum Brown",
+        summary:"ได้รับฉายาว่า 'รถถังมีชีวิต' แห่งโลกดึกดำบรรพ์ ลำตัวของมันแบนกว้างและหุ้มด้วยเกราะกระดูกหนา (Osteoderms) ตั้งแต่หัวจรดหาง แม้แต่เปลือกตาก็ยังมีกระดูกแข็งหุ้ม! อาวุธเด็ดของมันคือ 'ลูกตุ้มพิฆาต' ขนาดใหญ่ที่ปลายหาง ซึ่งเกิดจากกระดูกที่เชื่อมติดกัน มันสามารถเหวี่ยงลูกตุ้มนี้ด้วยความเร็วสูงเพื่อป้องกันตัว",
+        features:["เกราะกระดูกหนาทั้งตัว (Armor Plating)","ลูกตุ้มกระดูกที่ปลายหาง (Tail Club)","ลำตัวกว้างจุดศูนย์ถ่วงต่ำ","หัวกว้างปากแบน"],
+        habitat:"ป่าทึบและที่ราบลุ่มแม่น้ำในอเมริกาเหนือ",
+        behavior:"เป็นสัตว์รักสงบที่เคลื่อนที่ช้า แต่เมื่อถูกคุกคาม มันจะหมอบตัวลงต่ำเพื่อซ่อนส่วนท้องที่อ่อนนุ่ม แล้วใช้หางเหวี่ยงไปมาเพื่อกันไม่ให้นักล่าเข้าใกล้ แรงฟาดจากหางของมันเพียงพอที่จะทำให้กระดูกขาของ T.rex หักได้ทันที",
+        fun_fact:"แม้จะมีเกราะหนาและตัวใหญ่ แต่สมองของมันเล็กมาก และมันฟันขนาดเล็กที่เคี้ยวอาหารได้ไม่ดีนัก จึงต้องพึ่งพาระบบย่อยอาหารแบบหมักในกระเพาะขนาดใหญ่",
+        color:"#3f6212",
+      },
+      {
+        id:"parasaurolophus",
+        name:"Parasaurolophus",
+        thai:"พาราซอโรโลฟัส",
+        sci:"Parasaurolophus walkeri",
+        image:"https://media.istockphoto.com/id/1371472391/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/parasaurolophus-%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%81%E0%B8%AD%E0%B8%9A-3-%E0%B8%A1%E0%B8%B4%E0%B8%95%E0%B8%B4%E0%B8%A2%E0%B8%B8%E0%B8%84%E0%B8%84%E0%B8%A3%E0%B8%B5%E0%B9%80%E0%B8%97%E0%B8%8B%E0%B8%B1%E0%B8%AA.jpg?s=612x612&w=0&k=20&c=AbAnUoDMirCQruwUKLFQB_BIVYCuiLh-DUz-6h0NG9E=",
+        period:"ครีเทเชียสตอนปลาย (76.5–73 ล้านปีก่อน)",
+        diet:"กินพืช (Herbivore)",
+        diet_detail: "ใบสน, เฟิร์น, และพืชน้ำ",
+        length:"9.5 เมตร",
+        weight:"2.5 ตัน",
+        speed: "วิ่งหนีได้เร็วพอสมควรด้วย 2 ขา",
+        enemies: "Gorgosaurus, Daspletosaurus",
+        discovery: "ค้นพบปี 1920 ที่รัฐแอลเบอร์ตา แคนาดา โดย William Parks",
+        summary:"ไดโนเสาร์ปากเป็ดที่มีความโดดเด่นที่สุดด้วย 'หงอน' รูปท่อกลวงยาวที่ยื่นออกจากหลังหัว หงอนนี้เชื่อมต่อกับโพรงจมูกและมีความยาวถึง 1-2 เมตร นักวิทยาศาสตร์เชื่อว่ามันทำหน้าที่เป็น 'ห้องสะท้อนเสียง' เพื่อขยายเสียงร้องให้ดังกังวานคล้ายเครื่องดนตรีทรอมโบน ใช้ในการสื่อสารระยะไกลกับสมาชิกในฝูง",
+        features:["หงอนกลวงยาว (Resonating Chamber)","ปากเป็ดสำหรับบดเคี้ยว","เดินได้ทั้ง 2 ขาและ 4 ขา","หางยาวแข็งช่วยทรงตัวขณะเลี้ยว"],
+        habitat:"ที่ราบลุ่มมีน้ำขัง, ป่าโปร่ง และริมแม่น้ำ",
+        behavior:"เป็นสัตว์สังคมที่อาศัยอยู่รวมกันเป็นฝูงใหญ่เพื่อความปลอดภัย สามารถเดิน 4 ขาเพื่อกินอาหารต่ำๆ และลุกวิ่ง 2 ขาเพื่อหนีศัตรู การใช้เสียงสื่อสารเป็นกุญแจสำคัญในการเตือนภัยและหาคู่",
+        fun_fact:"นักวิทยาศาสตร์เคยสแกนกะโหลกและจำลองเสียงของมันออกมาจริงๆ! พบว่าเป็นเสียงต่ำที่ทุ้มลึกและดังก้องกังวานมาก ซึ่งสามารถเดินทางผ่านป่าทึบได้ดี",
+        color:"#a16207",
+      },
+      {
+        id: "dilophosaurus",
+        name: "Dilophosaurus",
+        thai: "ไดโลโฟซอรัส",
+        sci: "Dilophosaurus wetherilli",
+        image:"https://dinosaurland.es/wp-content/uploads/elementor/thumbs/dinosaurio-dilophosaurio-dinosaurland-r1n5kl3d0hoxzyfh48jq2li114xjxmj0g5g6jkao74.jpg",
+        period: "จูราสซิกตอนต้น (193 ล้านปีก่อน)",
+        diet: "กินเนื้อ (Carnivore)",
+        diet_detail: "ปลา, สัตว์เลื้อยคลานขนาดเล็ก, และไดโนเสาร์ยุคแรก (Sarahsaurus)",
+        length: "7 เมตร",
+        weight: "400 กิโลกรัม",
+        speed: "30 – 40 กม./ชม.",
+        enemies: "ไม่มี (เป็นนักล่าขนาดใหญ่ที่สุดในยุคนั้น)",
+        discovery: "ค้นพบปี 1942 ที่รัฐแอริโซนา โดย Sam Welles",
+        summary: "นักล่าขนาดกลางที่เป็นราชันย์ในยุคจูราสซิกตอนต้น ชื่อของมันแปลว่า 'กิ้งก่าสองหงอน' มาจากหงอนคู่รูปจานบนหัวที่บางและเปราะบาง ซึ่งคาดว่ามีไว้โชว์ความสวยงามเพื่อดึงดูดคู่ครองมากกว่าใช้ต่อสู้ รูปร่างของมันผอมเพรียว ขากรรไกรบนมีรอยหยัก (Subnarial gap) ที่ทำให้ฟันหน้ายื่นออกมาคล้ายจระเข้",
+        features: ["หงอนคู่รูปจานบนหัว", "รอยหยักที่ขากรรไกรบน", "รูปร่างเพรียวลม", "ฟันยาวแหลมคม"],
+        habitat: "ที่ราบลุ่มแม่น้ำและป่าดิบชื้นยุคแรก",
+        behavior: "เป็นนักล่าที่คล่องตัว อาจล่าเป็นฝูงหรือล่าเดี่ยว รอยหยักที่ขากรรไกรทำให้เชื่อว่ามันอาจกินปลาเป็นอาหารเสริมด้วย หงอนที่มีสีสันอาจใช้ข่มขู่ศัตรูหรือบอกสถานะทางสังคม",
+        fun_fact: "**ลบภาพจำจาก Jurassic Park ทิ้งไปซะ!** ตัวจริงของมันตัวใหญ่กว่าในหนังมาก ไม่มีแผงคอที่กางออกได้ และที่สำคัญคือ **พ่นพิษไม่ได้** นั่นเป็นเพียงจินตนาการของผู้สร้างภาพยนตร์เท่านั้น",
+        color: "#db2777",
+      },
+      {
+        id: "diplodocus",
+        name: "Diplodocus",
+        thai: "ดิปโลโดกัส",
+        sci: "Diplodocus carnegii",
+        image:"https://cdn.arstechnica.net/wp-content/uploads/2022/12/GettyImages-1263846134.jpg",
+        period: "จูราสซิกตอนปลาย (154–152 ล้านปีก่อน)",
+        diet: "กินพืช (Herbivore)",
+        diet_detail: "เฟิร์น, หญ้าถอดปล้อง, และใบไม้ระดับต่ำถึงกลาง",
+        length: "24 – 27 เมตร",
+        weight: "12 – 15 ตัน",
+        speed: "ช้ามาก",
+        enemies: "Allosaurus (ล่าเป็นฝูง)",
+        discovery: "ค้นพบปี 1878 ที่รัฐไวโอมิง โดย Benjamin Mudge และ Samuel Wendell Williston",
+        summary: "หนึ่งในไดโนเสาร์ที่ยาวที่สุดที่เคยเดินบนโลก Diplodocus มีคอที่ยาวมากและหางที่ยาวอย่างน่าเหลือเชื่อ ปลายหางเรียวเล็กคล้ายแส้ ซึ่งเชื่อว่าสามารถสะบัดด้วยความเร็วสูงจนเกิดเสียงดังสนั่น (Sonic Boom) เพื่อข่มขวัญศัตรูหรือสื่อสารกัน โครงสร้างคอของมันออกแบบมาให้ยื่นไปข้างหน้าขนานกับพื้นมากกว่ายกสูง เพื่อกวาดกินพืชในวงกว้างเหมือนเครื่องดูดฝุ่น",
+        features: ["หางยาวคล้ายแส้ (Whip-like tail)", "ฟันรูปแท่งดินสอเฉพาะด้านหน้าปาก", "หนามกระดูกยาวตลอดแนวสันหลัง", "คอยาวขนานพื้น"],
+        habitat: "ทุ่งกว้างกึ่งแห้งแล้งและป่าโปร่ง",
+        behavior: "อาศัยเป็นฝูงใหญ่ กินพืชระดับต่ำอย่างรวดเร็วโดยใช้ฟันหน้าขูดใบไม้แล้วกลืนทันทีโดยไม่เคี้ยว มีหินช่วยย่อย (Gastroliths) ในกระเพาะ หางยาวใช้เป็นอาวุธป้องกันตัวที่มีประสิทธิภาพสูง",
+        fun_fact: "นักวิจัยคำนวณว่าปลายหางของ Diplodocus สามารถเคลื่อนที่ได้เร็วกว่าเสียง! ทำให้เกิดเสียงดังเหมือนแส้ฟาดที่ดังกว่าเครื่องบินเจ็ท ซึ่งอาจใช้ไล่ Allosaurus ให้หนีไปได้",
+        color: "#0ea5e9",
+      }
+    ];
+
+    // -------- MEMBER DATA --------
+    const MEMBERS = [
+      { 
+        id: "m1", 
+        name: "สมาชิก 1", 
+        role: "นาย วัฒนมงคล กันคำ 68017361", 
+        color: "#d97706", 
+        image: "https://i.postimg.cc/s2b7Cx7T/587721939-1424576046064753-2900015096217046479-n.jpg"
+      },
+      { 
+        id: "m2", 
+        name: "สมาชิก 2", 
+        role: "นาย ศุภชัย ทองอินคำ 68049969", 
+        color: "#65a30d", 
+        image: "https://i.postimg.cc/Pq0YnJY2/588379848-1424576052731419-421450425832574341-n.jpg" 
+      },
+      { 
+        id: "m3", 
+        name: "สมาชิก 3", 
+        role: "นาย ภัทรพล ผลบุญ 68050451", 
+        color: "#ef4444", 
+        image: "https://i.postimg.cc/k5LKPGKj/587344117-1424575966064761-2642799928379817930-n.jpg"
+      },
+      { 
+        id: "m4", 
+        name: "สมาชิก 4", 
+        role: "นาย ปฏิภาน เครือใย 68019056", 
+        color: "#a8a29e", 
+        image: "https://i.postimg.cc/HLFX1nXZ/588433679-1424575969398094-2015805258738335410-n.jpg" 
+      },
+      { 
+        id: "m5", 
+        name: "สมาชิก 5", 
+        role: "นาย นันทพงศ์ เกียรติกุลภักดี 68016448", 
+        color: "#fcd34d", 
+        image: "https://i.postimg.cc/43jVRyVF/587762136-1424575982731426-7963984905919754187-n.jpg" 
+      }
+    ];
+
+    // ✅✅✅ ส่วนที่เพิ่มเข้ามาใหม่ ✅✅✅
+    let currentCategory = "all"; 
+    // ✅✅✅ จบส่วนที่เพิ่มเข้ามาใหม่ ✅✅✅
+
+    // -------- TIMELINE DETAIL DATA --------
+    const TIMELINE_DATA = [
+      {
+        id: "triassic",
+        name: "Triassic Period (ยุคไทรแอสซิก)",
+        year: "≈ 252 – 201 ล้านปีก่อน",
+        color: "#f59e0b", // Warning/Yellow
+        image: "https://media.sciencephoto.com/image/c0335833/800wm/C0335833-Triassic_Period,_Illustration.jpg",
+        desc: "รุ่งอรุณแห่งไดโนเสาร์: เป็นยุคแรกของมหายุคเมโสโซอิก (Mesozoic Era) โลกเพิ่งฟื้นตัวจากการสูญพันธุ์ครั้งใหญ่ที่สุดในประวัติศาสตร์ (The Great Dying) ทำให้สิ่งมีชีวิตที่เหลือรอดเริ่มวิวัฒนาการเพื่อแย่งชิงพื้นที่ว่าง สัตว์เลื้อยคลานกลุ่ม Archosaurs เริ่มครองโลกและวิวัฒนาการไปเป็นไดโนเสาร์กลุ่มแรก",
+        geography: "โลกมีทวีปเดียวขนาดมหึมาเรียกว่า 'พันเจีย' (Pangea) ล้อมรอบด้วยมหาสมุทรแพนทาลัสซา (Panthalassa) บริเวณใจกลางทวีปห่างไกลจากทะเลมากจนกลายเป็นทะเลทรายที่แห้งแล้งและร้อนระอุ",
+        climate: "ร้อนและแห้งแล้งจัด (Hot & Arid) ไม่มีน้ำแข็งที่ขั้วโลก ฤดูกาลแบ่งแยกชัดเจนระหว่างฤดูแล้งยาวนานและฤดูมรสุมที่มีฝนตกหนักรุนแรง (Mega-monsoons) สภาพอากาศที่โหดร้ายนี้เร่งให้สัตว์เลื้อยคลานต้องวิวัฒนาการผิวหนังเกล็ดหนาเพื่อกักเก็บความชื้น",
+        life: "ยุคแห่งการแข่งขัน: ไดโนเสาร์ยุคแรก (เช่น Eoraptor, Coelophysis) มีขนาดเล็กและปราดเปรียว ต้องแข่งขันกับสัตว์เลื้อยคลานกึ่งเลี้ยงลูกด้วยนม (Synapsids) และจระเข้ยักษ์ที่ครองแหล่งน้ำ ในทะเลมีสัตว์เลื้อยคลานทางทะเลกลุ่มแรกอย่าง Ichthyosaurs",
+        plants: "พืชทนแล้งครองโลก: ป่าส่วนใหญ่ประกอบด้วยพืชตระกูลสน (Conifers), เฟิร์นมีเมล็ด และปรง (Cycads) พืชดอกยังไม่ถือกำเนิด พื้นที่ห่างไกลแหล่งน้ำมีพืชขึ้นเบาบาง",
+        events: "กำเนิดสัตว์เลี้ยงลูกด้วยนมตัวแรก (First Mammals) และการบินครั้งแรกของสัตว์มีกระดูกสันหลัง (Pterosaurs)",
+        extinction: "สิ้นสุดด้วยเหตุการณ์ Triassic-Jurassic Extinction Event คาดว่าเกิดจากการระเบิดของภูเขาไฟครั้งใหญ่ ทำให้เกิดภาวะโลกร้อนฉับพลัน ไดโนเสาร์คู่แข่งส่วนใหญ่สูญพันธุ์ เปิดทางให้ไดโนเสาร์ครองโลกในยุคถัดไป"
+      },
+      {
+        id: "jurassic",
+        name: "Jurassic Period (ยุคจูราสซิก)",
+        year: "≈ 201 – 145 ล้านปีก่อน",
+        color: "#22c55e", // Success/Green
+        image: "https://media.sciencephoto.com/image/e4460683/800wm/E4460683-Jurassic_dinosaurs,_artwork.jpg",
+        desc: "ยุคทองของยักษ์ใหญ่: เป็นช่วงเวลาที่ไดโนเสาร์ขยายเผ่าพันธุ์ไปทั่วโลกและมีขนาดใหญ่โตที่สุดเท่าที่เคยมีมา ระบบนิเวศอุดมสมบูรณ์จนรองรับสิ่งมีชีวิตขนาดยักษ์ได้ สภาพอากาศที่ชื้นขึ้นเปลี่ยนทะเลทรายให้กลายเป็นป่าดิบชื้นเขียวขจี",
+        geography: "การแตกตัวของพันเจีย: มหาทวีปเริ่มแยกออกเป็น 'ลอเรเซีย' (เหนือ) และ 'กอนด์วานา' (ใต้) เกิดมหาสมุทรแอตแลนติกตอนกลาง น้ำทะเลไหลท่วมพื้นที่ต่ำเกิดเป็นทะเลตื้น (Shallow Seas) ที่อุดมสมบูรณ์",
+        climate: "อบอุ่นและชื้น (Warm & Humid) ภาวะเรือนกระจกตามธรรมชาติทำให้ทั่วโลกมีอากาศอบอุ่น ความชื้นจากทะเลที่แทรกตัวเข้ามาทำให้ฝนตกชุก ทะเลทรายลดน้อยลง กลายเป็นยุคที่พืชพรรณเจริญเติบโตดีที่สุด",
+        life: "แผ่นดินของยักษ์ใหญ่: ซอโรพอดคอยาว (เช่น Brachiosaurus, Diplodocus) ครองพื้นที่ป่า นักล่าขนาดใหญ่ (เช่น Allosaurus) อยู่บนจุดสูงสุดของห่วงโซ่อาหาร นกตัวแรก (Archaeopteryx) เริ่มวิวัฒนาการมาจากไดโนเสาร์เทอโรพอด",
+        plants: "ยุคแห่งป่าเฟิร์นและสน: ป่าสน (Conifers) แผ่ขยายไปทั่วโลก ร่วมกับเฟิร์นและแปะก๊วย (Ginkgo) พืชเหล่านี้เป็นแหล่งอาหารสำคัญที่ทำให้ไดโนเสาร์กินพืชวิวัฒนาการจนตัวใหญ่ยักษ์ได้",
+        events: "การวิวัฒนาการของนกตัวแรก (Avian Dinosaurs) และความรุ่งเรืองสูงสุดของสัตว์เลื้อยคลานทางทะเลอย่าง Plesiosaurs",
+        extinction: "ไม่มีการสูญพันธุ์ครั้งใหญ่ที่รุนแรง แต่มีการเปลี่ยนแปลงของระดับน้ำทะเลและสภาพอากาศเล็กน้อย นำไปสู่การเปลี่ยนผ่านสู่ยุคครีเทเชียส"
+      },
+      {
+        id: "cretaceous",
+        name: "Cretaceous Period (ยุคครีเทเชียส)",
+        year: "≈ 145 – 66 ล้านปีก่อน",
+        color: "#ef4444", // Danger/Red
+        image: "https://i.natgeofe.com/n/9c56eafe-8285-4eef-b0d4-e12473098742/907_2x1.jpg",
+        desc: "บทสุดท้ายที่รุ่งโรจน์: เป็นยุคที่ยาวนานที่สุดและมีความหลากหลายทางชีวภาพสูงสุด ไดโนเสาร์มีวิวัฒนาการถึงขีดสุดทั้งอาวุธป้องกันตัวและเขี้ยวเล็บสังหาร โลกเต็มไปด้วยสีสันจากการกำเนิดของ 'ดอกไม้' เป็นครั้งแรก",
+        geography: "ทวีปในปัจจุบัน: แผ่นดินแยกตัวออกจากกันจนมีรูปร่างคล้ายปัจจุบัน ระดับน้ำทะเลสูงที่สุดในประวัติศาสตร์โลก เกิดทะเลภายในทวีป (Inland Seas) แบ่งแยกประชากรไดโนเสาร์ทำให้เกิดสายพันธุ์ท้องถิ่นที่หลากหลาย",
+        climate: "เรือนกระจกโลก (Global Greenhouse): อากาศอบอุ่นทั่วโลก แม้แต่ขั้วโลกก็ยังมีป่าไม้ขึ้นปกคลุม ไม่มีน้ำแข็งถาวร แต่เริ่มมีฤดูกาลที่ชัดเจนขึ้นในช่วงปลายยุค",
+        life: "สงครามวิวัฒนาการ: พบไดโนเสาร์ที่มีชื่อเสียงที่สุด เช่น T.rex, Triceratops, Spinosaurus และ Velociraptor สัตว์เลี้ยงลูกด้วยนมเริ่มแยกสายพันธุ์ แมลงผสมเกสร (ผึ้ง, ผีเสื้อ) เริ่มมีบทบาทสำคัญ",
+        plants: "การปฏิวัติของดอกไม้: พืชดอก (Angiosperms) ถือกำเนิดและแพร่กระจายอย่างรวดเร็ว เบียดพืชโบราณดั้งเดิม เปลี่ยนแปลงโฉมหน้าของป่าและแหล่งอาหารของสัตว์กินพืชไปตลอดกาล",
+        events: "วิวัฒนาการร่วมกัน (Co-evolution) ระหว่างแมลงและพืชดอก และการปรากฏตัวของงูยุคแรก",
+        extinction: "K-Pg Extinction: อุกกาบาตขนาด 10 กม. พุ่งชนโลกที่คาบสมุทรยูคาทาน กวาดล้างไดโนเสาร์ (ที่ไม่ใช่นก) และสิ่งมีชีวิตกว่า 75% บนโลกไปจนหมดสิ้น ปิดฉากมหายุคแห่งสัตว์เลื้อยคลาน"
+      }
+    ];
+
+    // -------- Helper Functions --------
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
+
+    function chip(text){ return `<span class="chip">${text}</span>`; }
+
+    // SVG Thumbnail (Fallback)
+    function svgThumb(color, kind){
+      if(kind==="trike"){
+        return `
+        <div class="dino-figure mb-3">
+          <svg viewBox="0 0 600 300">
+            <rect x="0" y="240" width="600" height="60" fill="#1c1917"/>
+            <g fill="${color}" opacity=".9">
+              <ellipse cx="260" cy="180" rx="120" ry="52"/>
+              <rect x="180" y="160" width="30" height="20" rx="5"/>
+              <rect x="210" y="160" width="30" height="20" rx="5"/>
+              <polygon points="150,140 180,130 170,160"/>
+            </g>
+          </svg>
+        </div>`;
+      }
+      if(kind==="stego"){
+        return `
+        <div class="dino-figure mb-3">
+          <svg viewBox="0 0 600 300">
+            <rect x="0" y="240" width="600" height="60" fill="#1c1917"/>
+            <g fill="${color}" opacity=".9">
+              <ellipse cx="260" cy="180" rx="100" ry="46"/>
+              <polygon points="210,120 230,100 250,120 270,100 290,120"/>
+            </g>
+          </svg>
+        </div>`;
+      }
+      if(kind==="brachio"){
+        return `
+        <div class="dino-figure mb-3">
+          <svg viewBox="0 0 600 300">
+            <rect x="0" y="240" width="600" height="60" fill="#1c1917"/>
+            <g fill="${color}" opacity=".9">
+              <ellipse cx="250" cy="180" rx="120" ry="50"/>
+              <rect x="320" y="120" width="20" height="80" rx="10"/>
+              <circle cx="330" cy="110" r="18"/>
+            </g>
+          </svg>
+        </div>`;
+      }
+      if(kind==="spino"){
+        return `
+        <div class="dino-figure mb-3">
+          <svg viewBox="0 0 600 300">
+            <rect x="0" y="240" width="600" height="60" fill="#1c1917"/>
+            <g fill="${color}" opacity=".9">
+              <ellipse cx="260" cy="180" rx="130" ry="50"/>
+              <polygon points="180,150 200,100 220,90 240,120 260,140 280,150 300,155 320,160 340,165" />
+            </g>
+          </svg>
+        </div>`;
+      }
+      return `
+      <div class="dino-figure mb-3">
+        <svg viewBox="0 0 600 300">
+          <rect x="0" y="240" width="600" height="60" fill="#1c1917"/>
+          <g fill="${color}" opacity=".9">
+            <ellipse cx="260" cy="180" rx="130" ry="55"/>
+            <circle cx="380" cy="150" r="28"/>
+            <rect x="240" y="190" width="20" height="30" rx="6"/>
+            <rect x="270" y="190" width="20" height="30" rx="6"/>
+            <polygon points="395,160 405,150 405,167" fill="#fff"/>
+          </g>
+        </svg>
+      </div>`;
+    }
+
+    function speciesKind(id){
+      if(id==="triceratops") return "trike";
+      if(id==="stegosaurus") return "stego";
+      if(id==="brachiosaurus" || id==="diplodocus") return "brachio";
+      if(id==="spinosaurus") return "spino";
+      if(id==="ankylosaurus") return "stego";
+      if(id==="parasaurolophus") return "brachio";
+      return "trex";
+    }
+
+    // -------- Renderers --------
+    
+    function createDinoCardHTML(sp) {
+      const kind = speciesKind(sp.id);
+      let thumbContent;
+      if(sp.image){
+         thumbContent = `<div class="dino-figure mb-3"><img src="${sp.image}" alt="${sp.name}"></div>`;
+      } else {
+         thumbContent = svgThumb(sp.color, kind);
+      }
+
+      return `
+        <div class="col-sm-6 col-lg-4">
+          <div class="card-glass p-3 dino-card h-100" onclick="go('#/species/${sp.id}')">
+            ${thumbContent}
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h5 class="mb-0">${sp.name}</h5>
+              <span class="text-muted">${sp.thai}</span>
+            </div>
+            <div class="soft-divider my-2"></div>
+            <div class="d-flex flex-wrap gap-2">
+              ${chip(sp.period)} ${chip(sp.diet)}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSpeciesList(filterType = "all"){
+      // ✅✅✅ 1. บันทึกหมวดหมู่ล่าสุด ✅✅✅
+      currentCategory = filterType; 
+
+      const grid = $("#all-species-grid");
+      const title = $("#species-title"); 
+      
+      let filteredData = SPECIES;
+      let titleText = "สายพันธุ์ทั้งหมด";
+
+      if(filterType === "carnivore"){
+        filteredData = SPECIES.filter(s => s.diet.includes("กินเนื้อ"));
+        titleText = "สายพันธุ์กินเนื้อ (Carnivores)";
+      } else if (filterType === "herbivore"){
+        filteredData = SPECIES.filter(s => s.diet.includes("กินพืช"));
+        titleText = "สายพันธุ์กินพืช (Herbivores)";
+      }
+
+      if(title) title.innerText = titleText;
+      if (grid) {
+        grid.innerHTML = filteredData.map(createDinoCardHTML).join("");
+      }
+    }
+
+    function renderSpeciesDetail(id){
+      const sp = SPECIES.find(s => s.id === id);
+      const wrap = $("#detail-wrap");
+      if(!sp){
+        wrap.innerHTML = `<div class="col-12"><div class="alert alert-warning">ไม่พบสายพันธุ์ที่ร้องขอ</div></div>`;
+        return;
+      }
+      
+      const kind = speciesKind(sp.id);
+      let thumbContent;
+      if(sp.image){
+         thumbContent = `<div class="dino-figure mb-3"><img src="${sp.image}" alt="${sp.name}"></div>`;
+      } else {
+         thumbContent = svgThumb(sp.color, kind);
+      }
+      
+      // ✅✅✅ 2. เช็คหมวดหมู่และกำหนดลิงก์ปุ่มกลับ ✅✅✅
+      let backLink = "#/species"; 
+      if(currentCategory === "carnivore") {
+          backLink = "#/species/carnivore";
+      } else if (currentCategory === "herbivore") {
+          backLink = "#/species/herbivore";
+      }
+
+      wrap.innerHTML = `
+        <div class="col-lg-5">
+          <div class="card-glass p-3 mb-3">
+             <div class="mb-3">
+              <a href="${backLink}" class="btn btn-outline-light btn-sm">← กลับไปหน้าสายพันธุ์</a>
+            </div>
+            ${thumbContent}
+            <div class="d-flex flex-column gap-2 mt-3">
+               <div class="kpi"><small class="text-muted d-block">ยุคสมัย</small><span>${sp.period}</span></div>
+               <div class="d-flex gap-2">
+                 <div class="kpi w-100"><small class="text-muted d-block">อาหาร</small><span>${sp.diet}</span></div>
+                 <div class="kpi w-100"><small class="text-muted d-block">ขนาด</small><span>${sp.length}</span></div>
+               </div>
+               <div class="d-flex gap-2">
+                 <div class="kpi w-100"><small class="text-muted d-block">น้ำหนัก</small><span>${sp.weight}</span></div>
+                 <div class="kpi w-100"><small class="text-muted d-block">ความเร็ว</small><span>${sp.speed}</span></div>
+               </div>
+            </div>
+          </div>
+
+          <div class="card-glass p-3 mb-3">
+             <h6 class="text-warning mb-2 border-bottom border-secondary pb-2">🔍 ข้อมูลทางกายภาพและการค้นพบ</h6>
+             <ul class="list-unstyled small text-light text-opacity-75 mb-0">
+               <li class="mb-2"><strong>🍽️ อาหารโปรด:</strong> ${sp.diet_detail}</li>
+               <li class="mb-2"><strong>⚠️ ศัตรู:</strong> ${sp.enemies}</li>
+               <li class="mb-0"><strong>🦴 การค้นพบ:</strong> ${sp.discovery}</li>
+             </ul>
+          </div>
+          
+          <div class="alert alert-dark border border-secondary">
+             <h6 class="text-warning mb-2">💡 Did you know?</h6>
+             <p class="mb-0 small text-light">${sp.fun_fact}</p>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="card-glass p-4 h-100">
+            <h2 class="mb-1 display-6">${sp.name}</h2>
+            <h5 class="text-muted fw-light mb-3">${sp.thai} <small class="fs-6 fst-italic">(${sp.sci})</small></h5>
+            
+            <p class="lead text-light text-opacity-75 text-dense" style="line-height:1.8;">${sp.summary}</p>
+            
+            <div class="soft-divider my-4"></div>
+
+            <div class="mb-4">
+                <h5 class="text-info mb-3">🧬 ลักษณะเด่น (Features)</h5>
+                <ul class="list-group list-group-flush bg-transparent">
+                  ${sp.features.map(f => `<li class="list-group-item bg-transparent text-light border-secondary ps-0"><span class="me-2">🔹</span>${f}</li>`).join("")}
+                </ul>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <h5 class="text-success mb-2">🏞️ ถิ่นที่อยู่ (Habitat)</h5>
+                    <p class="text-light text-opacity-75 small">${sp.habitat}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="text-danger mb-2">⚔️ พฤติกรรม (Behavior)</h5>
+                    <p class="text-light text-opacity-75 small">${sp.behavior}</p>
+                </div>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTimelineDetail(id) {
+        const data = TIMELINE_DATA.find(t => t.id === id);
+        const container = $("#timeline-detail-content");
+        
+        if(!data || !container) return;
+
+        container.innerHTML = `
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card-glass p-3 h-100"> 
+                        <div class="dino-figure mb-3" style="aspect-ratio: 4/3;">
+                            <img src="${data.image}" alt="${data.name}">
+                        </div>
+                        <div class="d-flex flex-column gap-3">
+                           <div class="kpi text-center">
+                                <small class="text-muted d-block mb-1">ช่วงเวลา (Duration)</small>
+                                <h4 class="mb-0 fw-bold" style="color:${data.color}">${data.year}</h4>
+                           </div>
+                           <div class="alert border-secondary mb-0" style="background:rgba(255,255,255,0.03);">
+                              <h6 class="text-warning mb-2">📢 เหตุการณ์สำคัญ</h6>
+                              <p class="small text-light mb-0 text-opacity-75">${data.events}</p>
+                           </div>
+                           <div class="alert border-secondary mb-0" style="background:rgba(239, 68, 68, 0.1);">
+                              <h6 class="text-danger mb-2">🔥 จุดจบยุคสมัย</h6>
+                              <p class="small text-light mb-0 text-opacity-75">${data.extinction}</p>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card-glass p-4 p-md-5 h-100">
+                        <h2 class="mb-3 section-title display-6" style="border-color:${data.color}">${data.name}</h2>
+                        <p class="lead text-light text-opacity-75 mb-5" style="line-height: 1.8;">${data.desc}</p>
+                        
+                        <div class="row g-4">
+                             <div class="col-12">
+                                <h4 class="text-warning mb-3 border-bottom border-secondary pb-2">🌍 ภูมิศาสตร์ (Geography)</h4>
+                                <p class="text-light text-opacity-75">${data.geography}</p>
+                             </div>
+                             
+                             <div class="col-12">
+                                <h4 class="text-info mb-3 border-bottom border-secondary pb-2">☁️ สภาพอากาศ (Climate)</h4>
+                                <p class="text-light text-opacity-75">${data.climate}</p>
+                             </div>
+                             
+                             <div class="col-md-6">
+                                <div class="p-3 rounded border border-secondary h-100" style="background:rgba(34, 197, 94, 0.05);">
+                                    <h5 class="text-success mb-3">🦕 สิ่งมีชีวิตเด่น (Life)</h5>
+                                    <p class="small text-light text-opacity-75 mb-0">${data.life}</p>
+                                </div>
+                             </div>
+                             
+                             <div class="col-md-6">
+                                <div class="p-3 rounded border border-secondary h-100" style="background:rgba(16, 185, 129, 0.05);">
+                                    <h5 class="text-success mb-3">🌿 พืชพรรณ (Flora)</h5>
+                                    <p class="small text-light text-opacity-75 mb-0">${data.plants}</p>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderMemberList() {
+      const grid = $("#members-grid");
+      if (!grid) return;
+      grid.innerHTML = MEMBERS.map(m => {
+        const imgHTML = m.image 
+          ? `<img src="${m.image}" alt="${m.name}" style="width:180px; height:180px; object-fit:cover; object-position: top; border-radius:50%; border:3px solid ${m.color}; display: block; margin: 0 auto 1rem auto; box-shadow:0 5px 15px rgba(0,0,0,0.5);">`
+          : `<div style="width:180px; height:180px; margin:0 auto 1rem; background:${m.color}20; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px dashed ${m.color};"><span style="font-size:2rem">🦖</span></div>`;
+          
+        return `
+          <div class="col-lg-4 col-md-6">
+            <div class="card-glass p-4 h-100 text-center dino-card" style="cursor: default;">
+              ${imgHTML}
+              <h4 class="mb-1" style="color: ${m.color};">${m.name}</h4>
+              <p class="mb-0" style="color: white;">${m.role}</p>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // -------- Router Logic --------
+    function activate(id) {
+        document.querySelectorAll("[data-view]").forEach(v => v.classList.remove("active"));
+        const el = document.getElementById(id);
+        if (el) el.classList.add("active");
+
+        document.querySelectorAll(".nav-link").forEach(a => a.classList.remove('active'));
+
+        const hash = location.hash || "#/";
+
+        document.querySelectorAll(".nav-link").forEach(a => {
+            const href = a.getAttribute("href");
+            if (a.classList.contains('dropdown-toggle')) {
+                if (hash.startsWith('#/species')) {
+                    a.classList.add('active');
+                }
+                return;
+            }
+            if (!href || href === "#") return;
+            if (href === hash) {
+                a.classList.add("active");
+            }
+            else if (href !== "#/" && hash.startsWith(href)) {
+                a.classList.add("active");
+            }
+        });
+    }
+
+    function go(hash){ location.hash = hash; }
+
+    function router(){
+      const hash = location.hash || "#/";
+      const seg = hash.replace(/^#\//,"").split("/");
+      
+      if(seg[0] === "" || seg[0] === undefined){
+        activate("view-home");
+        return;
+      }
+
+      if(seg[0] === "species"){
+        if(!seg[1]){
+          renderSpeciesList("all");
+          activate("view-species");
+          return;
+        }
+        if(seg[1] === "carnivore" || seg[1] === "herbivore"){
+          renderSpeciesList(seg[1]);
+          activate("view-species");
+          return;
+        }
+        renderSpeciesDetail(seg[1]);
+        activate("view-detail");
+        return;
+      }
+
+      if(seg[0] === "timeline"){
+        if(seg[1]) {
+            renderTimelineDetail(seg[1]);
+            activate("view-timeline-detail");
+            return;
+        }
+        activate("view-timeline");
+        return;
+      }
+
+      if(seg[0] === "gallery"){
+        activate("view-gallery");
+        return;
+      }
+      
+      if(seg[0] === "members"){
+        renderMemberList();
+        activate("view-members");
+        return;
+      }
+
+      activate("view-home");
+    }
+
+    // -------- Init --------
+    window.addEventListener("hashchange", router);
+    window.addEventListener("DOMContentLoaded", () => {
+      renderSpeciesList();
+      renderMemberList();
+      router(); 
+    });
+  </script>
+
+  <div id="main" hidden></div>
+</body>
+</html>
