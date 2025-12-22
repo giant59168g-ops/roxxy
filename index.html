@@ -58,7 +58,7 @@
                     <i class="fas fa-gift"></i>
                 </h1>
                 <div class="role-badge">UID: roxxy_013</div>
-                <p class="bio-text">Streamer & Developer</p>
+                <p class="bio-text">I am a <span id="typing-text"></span><span class="cursor">|</span></p>
             </div>
         </div>
 
@@ -90,7 +90,7 @@
     </audio>
 
     <script>
-        // --- ระบบเล่นเพลง MP3 ---
+        // --- 1. ระบบเล่นเพลง MP3 ---
         var audio = document.getElementById("bg-music");
         var playBtn = document.getElementById("play-btn");
         var playIcon = playBtn.querySelector("i");
@@ -98,22 +98,14 @@
         var timeInfo = document.getElementById("time-info");
         var overlay = document.getElementById("click-overlay");
 
-        // 1. กด Overlay เพื่อเริ่มเล่น (แก้ปัญหามือถือ 100%)
         function startSite() {
-            audio.volume = 0.3; // ความดัง 30%
+            audio.volume = 0.3;
             audio.play().then(() => {
-                // เล่นสำเร็จ
                 playIcon.classList.remove("fa-play");
                 playIcon.classList.add("fa-pause");
-            }).catch(error => {
-                console.log("Audio blocked:", error);
-            });
-
-            // ซ่อน Overlay
+            }).catch(error => { console.log("Audio blocked:", error); });
             overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 500);
+            setTimeout(() => { overlay.style.display = 'none'; }, 500);
         }
 
         if (overlay) {
@@ -121,7 +113,6 @@
             overlay.addEventListener("touchstart", startSite, {passive: true});
         }
 
-        // 2. ปุ่ม Play/Pause ด้านใน
         playBtn.addEventListener("click", function() {
             if (audio.paused) {
                 audio.play();
@@ -134,30 +125,52 @@
             }
         });
 
-        // 3. อัปเดตหลอดเพลงและเวลา
         audio.addEventListener("timeupdate", function() {
             var percent = (audio.currentTime / audio.duration) * 100;
             progressFill.style.width = percent + "%";
-            
-            var current = formatTime(audio.currentTime);
-            var duration = formatTime(audio.duration || 0);
-            timeInfo.innerText = current + " / " + duration;
+            var min = Math.floor(audio.currentTime / 60);
+            var sec = Math.floor(audio.currentTime % 60);
+            var durationMin = Math.floor((audio.duration || 0) / 60);
+            var durationSec = Math.floor((audio.duration || 0) % 60);
+            timeInfo.innerText = min + ":" + (sec < 10 ? "0" : "") + sec + " / " + durationMin + ":" + (durationSec < 10 ? "0" : "") + durationSec;
         });
 
-        function formatTime(seconds) {
-            var min = Math.floor(seconds / 60);
-            var sec = Math.floor(seconds % 60);
-            return min + ":" + (sec < 10 ? "0" : "") + sec;
-        }
-
-        // --- Logic Popup Roblox (เหมือนเดิม) ---
+        // --- 2. Popup Roblox ---
         var robloxBtn = document.querySelector('.badge-icon.roblox');
         var robloxModal = document.getElementById('roblox-modal');
         var closeBtn = document.querySelector('.close-btn');
-
         if (robloxBtn) robloxBtn.addEventListener('click', function(e) { e.preventDefault(); robloxModal.classList.add('show'); });
         if (closeBtn) closeBtn.addEventListener('click', function() { robloxModal.classList.remove('show'); });
         window.addEventListener('click', function(e) { if (e.target == robloxModal) robloxModal.classList.remove('show'); });
+
+        // --- 3. Typing Effect (แบบแก้ไขแล้ว) ---
+        const texts = ["Streamer", "Developer", "Gamer", "Content Creator"]; 
+        let count = 0;
+        let index = 0;
+        let currentText = "";
+        let letter = "";
+
+        (function type() {
+            if (count === texts.length) { count = 0; }
+            currentText = texts[count];
+            letter = currentText.slice(0, ++index);
+
+            // เช็คว่ามี Element จริงไหมป้องกัน Error
+            const typingElement = document.getElementById("typing-text");
+            if(typingElement) {
+                typingElement.textContent = letter;
+            }
+
+            if (letter.length === currentText.length) {
+                count++;
+                index = 0;
+                setTimeout(type, 2000); 
+            } else {
+                setTimeout(type, 150); 
+            }
+        })();
+        
+        // --- หมายเหตุ: เอา 3D Tilt Script ออกแล้ว เพื่อให้การ์ดลอย (Float) ได้สวยงาม ---
     </script>
 </body>
 </html>
