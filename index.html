@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Roxxy</title>
+    <link rel="icon" href="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber(1).png?raw=true" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="click-overlay">
+        <img src="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber.gif?raw=true" class="enter-gif" alt="Welcome">
+        <div class="click-text">Click to Profile...</div>
+    </div>
+
+    <div class="bg-image"></div>
+
+    <div id="roblox-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Select Roblox Account</h3>
+            <div class="account-list">
+                <a href="https://www.roblox.com/users/2661396737/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
+                    <i class="fas fa-user"></i> ID:หลักRoxxy
+                </a>
+                <a href="https://www.roblox.com/users/8745370380/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
+                    <i class="fas fa-user"></i> ID:เเมพตกปลา
+                </a>
+                <a href="https://www.roblox.com/users/8704297154/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
+                    <i class="fas fa-user"></i> ID:เเมพขุดเหมือง
+                </a>
+                <a href="https://www.roblox.com/users/9007481771/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
+                    <i class="fas fa-user"></i> ID:เเมพวอลเลย์บอล
+                </a>                
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        
+        <div class="profile-header">
+            <div class="avatar-container">
+                <div class="avatar" 
+                     style="background-image: url('https://github.com/giant59168g-ops/-Dinoverse/blob/main/Png_Tuber.gif?raw=true'); 
+                            background-color: rgba(0,0,0,0.5); 
+                            background-position: center -8px;">
+                </div>
+                <img src="https://media.tenor.com/DZI4YglygNYAAAAj/chomp-chomp-discord.gif" class="avatar-frame" alt="Frame">
+                <div class="status-dot"></div>
+            </div>
+
+            <div class="user-info">
+                <h1>
+                    Roxxy 
+                    <i class="fas fa-crown owner-badge" title="Owner"></i>
+                    <i class="fas fa-gift"></i>
+                </h1>
+                <div class="role-badge">UID: roxxy_013</div>
+                <p class="bio-text">Streamer & Developer</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="badges">
+            <a href="https://discord.gg/v3Dz5tSVuK" target="_blank" class="badge-icon discord"><i class="fab fa-discord"></i></a>
+            <a href="https://www.youtube.com/@Roxxy-f3m" target="_blank" class="badge-icon youtube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@roxxy_013" target="_blank" class="badge-icon tiktok"><i class="fab fa-tiktok"></i></a>
+            <a href="#" class="badge-icon roblox"><i class="fas fa-gamepad"></i></a>
+            <a href="https://ezdn.app/roxxy" target="_blank" class="badge-icon donate" title="Donate"><i class="fas fa-gift"></i></a>
+        </div>
+
+        <div class="music-player">
+            <div class="play-btn" id="play-btn"><i class="fas fa-play"></i></div>
+            
+            <div class="track-info">
+                <div class="track-name">BABYMONSTER - SUPA DUPA LUV</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="time-info" id="time-info">0:00 / 3:01</div>
+        </div>
+
+    </div> 
+    
+    <div id="youtube-audio" style="display:none;"></div>
+
+<script>
+        // --- ส่วนตั้งค่า YouTube API (หัวใจหลัก) ---
+        var player;
+        var isPlayerReady = false;
+        var userInteracted = false;
+
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-audio', {
+                height: '0',
+                width: '0',
+                videoId: 'SbdOIdg2McI', // รหัสเพลง
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'loop': 1,
+                    'playlist': 'SbdOIdg2McI', // ใส่ ID ซ้ำเพื่อให้ Loop ทำงานสมบูรณ์
+                    'playsinline': 1, // **สำคัญมาก** ทำให้ iPhone เล่นเพลงได้โดยไม่เด้ง Fullscreen
+                    'enablejsapi': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // ตัวแปรสำหรับหลอดเพลง
+        var progressBar = document.getElementById('progress-fill');
+        var playBtn = document.getElementById('play-btn');
+        var playIcon = playBtn.querySelector('i');
+        var timeInfo = document.getElementById('time-info');
+        var progressInterval;
+        var isPlaying = false;
+
+        function onPlayerReady(event) {
+    isPlayerReady = true;
+    player.setVolume(30);
+
+    // 🔥 ถ้าผู้ใช้เคยแตะแล้ว → เล่นทันที
+    if (userInteracted) {
+        player.unMute();
+        player.playVideo();
+    }
+}
+
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+                startProgressLoop();
+            } else if (event.data == YT.PlayerState.ENDED) {
+                player.playVideo(); // สั่ง Loop เมื่อจบเพลง
+            } else {
+                isPlaying = false;
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+                stopProgressLoop();
+            }
+        }
+
+        // --- ส่วนที่ทำให้เหมือน guns.lol (Click to Enter) ---
+        var overlay = document.getElementById('click-overlay');
+        
+        // ฟังก์ชันเริ่มทำงานเมื่อแตะ
+        function enterSite() {
+    userInteracted = true;
+
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    setTimeout(() => overlay.style.display = 'none', 500);
+
+    if (isPlayerReady) {
+        player.unMute();
+        player.playVideo();
+    }
+}
+
+        if (overlay) {
+            // ดักจับทั้งการคลิก (PC) และการแตะ (Mobile)
+            overlay.addEventListener('pointerdown', enterSite);
+        }
+
+        // --- ส่วนควบคุมปุ่ม Play/Pause ด้านใน ---
+        playBtn.addEventListener('click', function() {
+            if (isPlaying) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        });
+
+        // --- ส่วนขยับหลอดเพลง ---
+        function startProgressLoop() {
+            stopProgressLoop();
+            progressInterval = setInterval(function() {
+                if (!player || !player.getDuration) return;
+                var currentTime = player.getCurrentTime();
+                var duration = player.getDuration();
+                if (duration > 0) {
+                    var percent = (currentTime / duration) * 100;
+                    progressBar.style.width = percent + '%';
+                    timeInfo.innerText = formatTime(currentTime) + ' / ' + formatTime(duration);
+                }
+            }, 100);
+        }
+
+        function stopProgressLoop() { clearInterval(progressInterval); }
+
+        function formatTime(seconds) {
+            var min = Math.floor(seconds / 60);
+            var sec = Math.floor(seconds % 60);
+            return min + ':' + (sec < 10 ? '0' : '') + sec;
+        }
+
+        // --- โหลด YouTube API ---
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // --- Modal Logic (Roblox) ---
+        var robloxBtn = document.querySelector('.badge-icon.roblox');
+        var robloxModal = document.getElementById('roblox-modal');
+        var closeBtn = document.querySelector('.close-btn');
+
+        if (robloxBtn) {
+            robloxBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                robloxModal.classList.add('show');
+            });
+        }
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                robloxModal.classList.remove('show');
+            });
+        }
+        window.addEventListener('click', function(e) {
+            if (e.target == robloxModal) {
+                robloxModal.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
