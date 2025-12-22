@@ -148,13 +148,18 @@
             return min + ":" + (sec < 10 ? "0" : "") + sec;
         }
 
-        // --- 4. (เพิ่มใหม่) หยุดเพลงเมื่อออกจากเว็บ/พับหน้าจอ ---
+        // --- 4. แก้ไขใหม่: หยุด/เล่นต่อ ตามการพับหน้าจอ ---
         document.addEventListener("visibilitychange", function() {
             if (document.hidden) {
-                // หยุดเพลงทันทีที่มองไม่เห็นหน้าเว็บ
+                // พับหน้าจอ -> หยุด
                 audio.pause();
                 playIcon.classList.remove("fa-pause");
                 playIcon.classList.add("fa-play");
+            } else {
+                // กลับมา -> เล่นต่อ
+                audio.play();
+                playIcon.classList.remove("fa-play");
+                playIcon.classList.add("fa-pause");
             }
         });
 
@@ -170,3 +175,4 @@
 </body>
 
 </html>
+
