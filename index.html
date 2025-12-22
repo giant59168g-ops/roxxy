@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile | Roxxy</title>
     <link rel="icon" href="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber(1).png?raw=true" type="image/png">
+    
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,7 +14,8 @@
 
     <div id="click-overlay">
         <img src="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber.gif?raw=true" class="enter-gif" alt="Welcome">
-        <div class="click-text">Click to Profile...</div>
+        
+        <div class="click-text" id="status-text" style="opacity: 0.5;">Loading...</div>
     </div>
 
     <div class="bg-image"></div>
@@ -90,27 +92,29 @@
     
     <div id="youtube-audio" style="display:none;"></div>
 
-<script>
-        // --- ส่วนตั้งค่า YouTube API (หัวใจหลัก) ---
+    <script>
+        // --- ส่วนควบคุมระบบเสียงและการเข้าเว็บ ---
         var player;
         var isPlayerReady = false;
-        var userInteracted = false;
+        var statusText = document.getElementById('status-text');
+        var overlay = document.getElementById('click-overlay');
 
-
+        // 1. โหลด YouTube API
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-audio', {
                 height: '0',
                 width: '0',
                 videoId: 'SbdOIdg2McI', // รหัสเพลง
                 playerVars: {
-                    'autoplay': 0,
+                    'autoplay': 0, 
                     'controls': 0,
                     'rel': 0,
                     'showinfo': 0,
                     'loop': 1,
-                    'playlist': 'SbdOIdg2McI', // ใส่ ID ซ้ำเพื่อให้ Loop ทำงานสมบูรณ์
-                    'playsinline': 1, // **สำคัญมาก** ทำให้ iPhone เล่นเพลงได้โดยไม่เด้ง Fullscreen
-                    'enablejsapi': 1
+                    'playlist': 'SbdOIdg2McI', // Loop Playlist
+                    'playsinline': 1, // สำคัญมากสำหรับ iPhone
+                    'enablejsapi': 1,
+                    'origin': window.location.origin
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -119,25 +123,55 @@
             });
         }
 
-        // ตัวแปรสำหรับหลอดเพลง
+        // 2. เมื่อ YouTube โหลดเสร็จพร้อมเล่น
+        function onPlayerReady(event) {
+            isPlayerReady = true;
+            
+            // เปลี่ยนข้อความบอกผู้ใช้ว่ากดได้แล้ว
+            if(statusText) {
+                statusText.innerText = "Click to Enter...";
+                statusText.style.opacity = "1";
+                statusText.style.cursor = "pointer";
+            }
+            
+            player.setVolume(30); // ตั้งเสียง 30%
+        }
+
+        // 3. ฟังก์ชั่นกดเข้าเว็บ (ทำงานเมื่อกด overlay)
+        function enterSite() {
+            if (!isPlayerReady) return; // ถ้าเพลงยังไม่พร้อม ห้ามกด
+
+            // สั่งปลดเสียงและเล่นทันที
+            if (player) {
+                player.unMute();
+                player.playVideo();
+            }
+
+            // ซ่อน Overlay
+            overlay.style.opacity = '0';
+            // ป้องกันการกดซ้ำ
+            overlay.style.pointerEvents = 'none'; 
+            setTimeout(function() {
+                overlay.style.display = 'none';
+            }, 500);
+        }
+
+        // 4. ดักจับการกด (รองรับ Mobile Touch & PC Click)
+        if (overlay) {
+            overlay.addEventListener('click', enterSite);
+            overlay.addEventListener('touchstart', function(e) {
+                enterSite();
+            }, {passive: true});
+        }
+
+        // ------------------------------------------------
+        // --- ส่วนการทำงานของเครื่องเล่นเพลงด้านใน ---
+        var isPlaying = false;
         var progressBar = document.getElementById('progress-fill');
         var playBtn = document.getElementById('play-btn');
         var playIcon = playBtn.querySelector('i');
         var timeInfo = document.getElementById('time-info');
         var progressInterval;
-        var isPlaying = false;
-
-        function onPlayerReady(event) {
-    isPlayerReady = true;
-    player.setVolume(30);
-
-    // 🔥 ถ้าผู้ใช้เคยแตะแล้ว → เล่นทันที
-    if (userInteracted) {
-        player.unMute();
-        player.playVideo();
-    }
-}
-
 
         function onPlayerStateChange(event) {
             if (event.data == YT.PlayerState.PLAYING) {
@@ -146,7 +180,7 @@
                 playIcon.classList.add('fa-pause');
                 startProgressLoop();
             } else if (event.data == YT.PlayerState.ENDED) {
-                player.playVideo(); // สั่ง Loop เมื่อจบเพลง
+                player.playVideo(); // Loop
             } else {
                 isPlaying = false;
                 playIcon.classList.remove('fa-pause');
@@ -155,38 +189,11 @@
             }
         }
 
-        // --- ส่วนที่ทำให้เหมือน guns.lol (Click to Enter) ---
-        var overlay = document.getElementById('click-overlay');
-        
-        // ฟังก์ชันเริ่มทำงานเมื่อแตะ
-        function enterSite() {
-    userInteracted = true;
-
-    overlay.style.opacity = '0';
-    overlay.style.pointerEvents = 'none';
-    setTimeout(() => overlay.style.display = 'none', 500);
-
-    if (isPlayerReady) {
-        player.unMute();
-        player.playVideo();
-    }
-}
-
-        if (overlay) {
-            // ดักจับทั้งการคลิก (PC) และการแตะ (Mobile)
-            overlay.addEventListener('pointerdown', enterSite);
-        }
-
-        // --- ส่วนควบคุมปุ่ม Play/Pause ด้านใน ---
         playBtn.addEventListener('click', function() {
-            if (isPlaying) {
-                player.pauseVideo();
-            } else {
-                player.playVideo();
-            }
+            if (isPlaying) { player.pauseVideo(); } 
+            else { player.playVideo(); }
         });
 
-        // --- ส่วนขยับหลอดเพลง ---
         function startProgressLoop() {
             stopProgressLoop();
             progressInterval = setInterval(function() {
@@ -202,40 +209,26 @@
         }
 
         function stopProgressLoop() { clearInterval(progressInterval); }
-
         function formatTime(seconds) {
             var min = Math.floor(seconds / 60);
             var sec = Math.floor(seconds % 60);
             return min + ':' + (sec < 10 ? '0' : '') + sec;
         }
 
-        // --- โหลด YouTube API ---
+        // Script โหลด YouTube IFrame API
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // --- Modal Logic (Roblox) ---
+        // --- Logic สำหรับ Modal Roblox ---
         var robloxBtn = document.querySelector('.badge-icon.roblox');
         var robloxModal = document.getElementById('roblox-modal');
         var closeBtn = document.querySelector('.close-btn');
 
-        if (robloxBtn) {
-            robloxBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                robloxModal.classList.add('show');
-            });
-        }
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function() {
-                robloxModal.classList.remove('show');
-            });
-        }
-        window.addEventListener('click', function(e) {
-            if (e.target == robloxModal) {
-                robloxModal.classList.remove('show');
-            }
-        });
+        if (robloxBtn) robloxBtn.addEventListener('click', function(e) { e.preventDefault(); robloxModal.classList.add('show'); });
+        if (closeBtn) closeBtn.addEventListener('click', function() { robloxModal.classList.remove('show'); });
+        window.addEventListener('click', function(e) { if (e.target == robloxModal) robloxModal.classList.remove('show'); });
     </script>
 </body>
 </html>
