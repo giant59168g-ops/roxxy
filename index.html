@@ -89,7 +89,7 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-<script>
+    <script>
         // --- ระบบเล่นเพลง MP3 ---
         var audio = document.getElementById("bg-music");
         var playBtn = document.getElementById("play-btn");
@@ -98,16 +98,18 @@
         var timeInfo = document.getElementById("time-info");
         var overlay = document.getElementById("click-overlay");
 
-        // 1. กด Overlay เพื่อเริ่มเล่น
+        // 1. กด Overlay เพื่อเริ่มเล่น (แก้ปัญหามือถือ 100%)
         function startSite() {
-            audio.volume = 0.3; 
+            audio.volume = 0.3; // ความดัง 30%
             audio.play().then(() => {
+                // เล่นสำเร็จ
                 playIcon.classList.remove("fa-play");
                 playIcon.classList.add("fa-pause");
             }).catch(error => {
                 console.log("Audio blocked:", error);
             });
 
+            // ซ่อน Overlay
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
@@ -119,7 +121,7 @@
             overlay.addEventListener("touchstart", startSite, {passive: true});
         }
 
-        // 2. ปุ่ม Play/Pause
+        // 2. ปุ่ม Play/Pause ด้านใน
         playBtn.addEventListener("click", function() {
             if (audio.paused) {
                 audio.play();
@@ -132,7 +134,7 @@
             }
         });
 
-        // 3. อัปเดตหลอดเพลง
+        // 3. อัปเดตหลอดเพลงและเวลา
         audio.addEventListener("timeupdate", function() {
             var percent = (audio.currentTime / audio.duration) * 100;
             progressFill.style.width = percent + "%";
@@ -148,22 +150,7 @@
             return min + ":" + (sec < 10 ? "0" : "") + sec;
         }
 
-        // --- 4. แก้ไขใหม่: หยุด/เล่นต่อ ตามการพับหน้าจอ ---
-        document.addEventListener("visibilitychange", function() {
-            if (document.hidden) {
-                // พับหน้าจอ -> หยุด
-                audio.pause();
-                playIcon.classList.remove("fa-pause");
-                playIcon.classList.add("fa-play");
-            } else {
-                // กลับมา -> เล่นต่อ
-                audio.play();
-                playIcon.classList.remove("fa-play");
-                playIcon.classList.add("fa-pause");
-            }
-        });
-
-        // --- Logic Popup Roblox ---
+        // --- Logic Popup Roblox (เหมือนเดิม) ---
         var robloxBtn = document.querySelector('.badge-icon.roblox');
         var robloxModal = document.getElementById('roblox-modal');
         var closeBtn = document.querySelector('.close-btn');
