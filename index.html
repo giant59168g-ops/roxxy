@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile | Roxxy</title>
     <link rel="icon" href="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber(1).png?raw=true" type="image/png">
-    
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,8 +13,7 @@
 
     <div id="click-overlay">
         <img src="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber.gif?raw=true" class="enter-gif" alt="Welcome">
-        
-        <div class="click-text" id="status-text" style="opacity: 0.5;">Loading...</div>
+        <div class="click-text">Click to Enter...</div>
     </div>
 
     <div class="bg-image"></div>
@@ -42,7 +40,6 @@
     </div>
     
     <div class="card">
-        
         <div class="profile-header">
             <div class="avatar-container">
                 <div class="avatar" 
@@ -77,151 +74,83 @@
 
         <div class="music-player">
             <div class="play-btn" id="play-btn"><i class="fas fa-play"></i></div>
-            
             <div class="track-info">
                 <div class="track-name">BABYMONSTER - SUPA DUPA LUV</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill"></div>
                 </div>
             </div>
-            
-            <div class="time-info" id="time-info">0:00 / 3:01</div>
+            <div class="time-info" id="time-info">0:00 / 0:00</div>
         </div>
 
     </div> 
-    
-    <div id="youtube-audio" style="display:none;"></div>
+
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        // --- ส่วนควบคุมระบบเสียงและการเข้าเว็บ ---
-        var player;
-        var isPlayerReady = false;
-        var statusText = document.getElementById('status-text');
-        var overlay = document.getElementById('click-overlay');
+        // --- ระบบเล่นเพลง MP3 ---
+        var audio = document.getElementById("bg-music");
+        var playBtn = document.getElementById("play-btn");
+        var playIcon = playBtn.querySelector("i");
+        var progressFill = document.getElementById("progress-fill");
+        var timeInfo = document.getElementById("time-info");
+        var overlay = document.getElementById("click-overlay");
 
-        // 1. โหลด YouTube API
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-audio', {
-                height: '0',
-                width: '0',
-                videoId: 'SbdOIdg2McI', // รหัสเพลง
-                playerVars: {
-                    'autoplay': 0, 
-                    'controls': 0,
-                    'rel': 0,
-                    'showinfo': 0,
-                    'loop': 1,
-                    'playlist': 'SbdOIdg2McI', // Loop Playlist
-                    'playsinline': 1, // สำคัญมากสำหรับ iPhone
-                    'enablejsapi': 1,
-                    'origin': window.location.origin
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
+        // 1. กด Overlay เพื่อเริ่มเล่น (แก้ปัญหามือถือ 100%)
+        function startSite() {
+            audio.volume = 0.3; // ความดัง 30%
+            audio.play().then(() => {
+                // เล่นสำเร็จ
+                playIcon.classList.remove("fa-play");
+                playIcon.classList.add("fa-pause");
+            }).catch(error => {
+                console.log("Audio blocked:", error);
             });
-        }
-
-        // 2. เมื่อ YouTube โหลดเสร็จพร้อมเล่น
-        function onPlayerReady(event) {
-            isPlayerReady = true;
-            
-            // เปลี่ยนข้อความบอกผู้ใช้ว่ากดได้แล้ว
-            if(statusText) {
-                statusText.innerText = "Click to Enter...";
-                statusText.style.opacity = "1";
-                statusText.style.cursor = "pointer";
-            }
-            
-            player.setVolume(30); // ตั้งเสียง 30%
-        }
-
-        // 3. ฟังก์ชั่นกดเข้าเว็บ (ทำงานเมื่อกด overlay)
-        function enterSite() {
-            if (!isPlayerReady) return; // ถ้าเพลงยังไม่พร้อม ห้ามกด
-
-            // สั่งปลดเสียงและเล่นทันที
-            if (player) {
-                player.unMute();
-                player.playVideo();
-            }
 
             // ซ่อน Overlay
             overlay.style.opacity = '0';
-            // ป้องกันการกดซ้ำ
-            overlay.style.pointerEvents = 'none'; 
-            setTimeout(function() {
+            setTimeout(() => {
                 overlay.style.display = 'none';
             }, 500);
         }
 
-        // 4. ดักจับการกด (รองรับ Mobile Touch & PC Click)
         if (overlay) {
-            overlay.addEventListener('click', enterSite);
-            overlay.addEventListener('touchstart', function(e) {
-                enterSite();
-            }, {passive: true});
+            overlay.addEventListener("click", startSite);
+            overlay.addEventListener("touchstart", startSite, {passive: true});
         }
 
-        // ------------------------------------------------
-        // --- ส่วนการทำงานของเครื่องเล่นเพลงด้านใน ---
-        var isPlaying = false;
-        var progressBar = document.getElementById('progress-fill');
-        var playBtn = document.getElementById('play-btn');
-        var playIcon = playBtn.querySelector('i');
-        var timeInfo = document.getElementById('time-info');
-        var progressInterval;
-
-        function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.PLAYING) {
-                isPlaying = true;
-                playIcon.classList.remove('fa-play');
-                playIcon.classList.add('fa-pause');
-                startProgressLoop();
-            } else if (event.data == YT.PlayerState.ENDED) {
-                player.playVideo(); // Loop
+        // 2. ปุ่ม Play/Pause ด้านใน
+        playBtn.addEventListener("click", function() {
+            if (audio.paused) {
+                audio.play();
+                playIcon.classList.remove("fa-play");
+                playIcon.classList.add("fa-pause");
             } else {
-                isPlaying = false;
-                playIcon.classList.remove('fa-pause');
-                playIcon.classList.add('fa-play');
-                stopProgressLoop();
+                audio.pause();
+                playIcon.classList.remove("fa-pause");
+                playIcon.classList.add("fa-play");
             }
-        }
-
-        playBtn.addEventListener('click', function() {
-            if (isPlaying) { player.pauseVideo(); } 
-            else { player.playVideo(); }
         });
 
-        function startProgressLoop() {
-            stopProgressLoop();
-            progressInterval = setInterval(function() {
-                if (!player || !player.getDuration) return;
-                var currentTime = player.getCurrentTime();
-                var duration = player.getDuration();
-                if (duration > 0) {
-                    var percent = (currentTime / duration) * 100;
-                    progressBar.style.width = percent + '%';
-                    timeInfo.innerText = formatTime(currentTime) + ' / ' + formatTime(duration);
-                }
-            }, 100);
-        }
+        // 3. อัปเดตหลอดเพลงและเวลา
+        audio.addEventListener("timeupdate", function() {
+            var percent = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = percent + "%";
+            
+            var current = formatTime(audio.currentTime);
+            var duration = formatTime(audio.duration || 0);
+            timeInfo.innerText = current + " / " + duration;
+        });
 
-        function stopProgressLoop() { clearInterval(progressInterval); }
         function formatTime(seconds) {
             var min = Math.floor(seconds / 60);
             var sec = Math.floor(seconds % 60);
-            return min + ':' + (sec < 10 ? '0' : '') + sec;
+            return min + ":" + (sec < 10 ? "0" : "") + sec;
         }
 
-        // Script โหลด YouTube IFrame API
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        // --- Logic สำหรับ Modal Roblox ---
+        // --- Logic Popup Roblox (เหมือนเดิม) ---
         var robloxBtn = document.querySelector('.badge-icon.roblox');
         var robloxModal = document.getElementById('roblox-modal');
         var closeBtn = document.querySelector('.close-btn');
