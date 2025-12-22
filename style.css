@@ -14,6 +14,12 @@ body {
     overflow: hidden;
     color: white;
     background-color: #111;
+    /* Custom Cursor */
+    cursor: url('https://cur.cursors-4u.net/games/gam-13/gam1282.cur'), auto; 
+}
+
+a, .play-btn, .close-btn {
+    cursor: url('https://cur.cursors-4u.net/games/gam-13/gam1283.cur'), pointer;
 }
 
 /* --- 2. Backgrounds --- */
@@ -30,17 +36,6 @@ body {
     filter: brightness(0.7);
 }
 
-.bg-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-    filter: brightness(0.7);
-}
-
 /* --- 3. Click to Enter Overlay --- */
 #click-overlay {
     position: fixed;
@@ -48,12 +43,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    
-    /* Effect settings */
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -78,7 +70,7 @@ body {
     animation: blink 2s infinite;
 }
 
-/* --- 4. Main Card (Glassmorphism) --- */
+/* --- 4. Main Card (Glassmorphism & Floating) --- */
 .card {
     background: rgba(78, 78, 78, 0.4);
     backdrop-filter: blur(15px);
@@ -92,7 +84,10 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* Animation: PopIn + Floating */
+    animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), float-up-down 4s ease-in-out infinite;
+    /* เอา transform-style ของ 3D ออก เพื่อให้ Float ทำงานได้ */
 }
 
 /* --- 5. Profile Section --- */
@@ -107,6 +102,14 @@ body {
     width: 90px;
     height: 90px;
     flex-shrink: 0;
+    /* Animation: Breathing */
+    animation: breathing-glow 3s ease-in-out infinite;
+}
+
+/* Pause animation on hover */
+.avatar-container:hover {
+    animation-play-state: paused; 
+    transform: scale(1.1);
 }
 
 .avatar {
@@ -151,7 +154,6 @@ body {
     text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
-.verified-badge { color: #3b82f6; }
 .owner-badge { color: #ffd700; font-size: 0.9rem; }
 
 .role-badge {
@@ -168,6 +170,7 @@ body {
     font-size: 0.9rem;
     opacity: 0.8;
     margin-top: 5px;
+    min-height: 24px; /* กันบรรทัดกระตุกเวลาพิมพ์ */
 }
 
 .divider {
@@ -176,7 +179,7 @@ body {
     width: 100%;
 }
 
-/* --- 6. Social Buttons --- */
+/* --- 6. Social Buttons (Jelly & Spin) --- */
 .badges {
     display: flex;
     justify-content: center;
@@ -195,15 +198,25 @@ body {
     font-size: 1.4rem;
     color: white;
     text-decoration: none;
-    transition: 0.3s;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
 }
 
-.badge-icon:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.badge-icon:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+    animation: jelly-bounce 0.5s; /* เด้งดึ๋ง */
+}
+
+/* Icon Spin inside Button */
+.badge-icon:hover i {
+    transform: rotate(360deg) scale(1.2);
+    transition: transform 0.4s ease-in-out;
+}
+
 .badge-icon.discord:hover { background: #5865F2; }
 .badge-icon.youtube:hover { background: #FF0000; }
 .badge-icon.tiktok:hover { background: #000000; border-color: #fff; }
-.badge-icon.steam:hover { background: #171a21; }
 .badge-icon.roblox:hover { background: #E6E6E6; color: #000; }
 .badge-icon.donate:hover { background: #2744e6; }
 
@@ -230,15 +243,11 @@ body {
     cursor: pointer;
     transition: 0.2s;
 }
+.play-btn:hover { animation: jelly-bounce 0.5s; }
 .play-btn:active { transform: scale(0.9); }
 
 .track-info { flex-grow: 1; }
-
-.track-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
+.track-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; }
 
 .progress-bar {
     width: 100%;
@@ -247,7 +256,6 @@ body {
     border-radius: 2px;
     overflow: hidden;
 }
-
 .progress-fill {
     width: 0%;
     height: 100%;
@@ -255,14 +263,9 @@ body {
     box-shadow: 0 0 10px white;
     border-radius: 2px;
 }
+.time-info { font-size: 0.75rem; opacity: 0.7; }
 
-.time-info {
-    font-size: 0.75rem;
-    opacity: 0.7;
-    font-variant-numeric: tabular-nums;
-}
-
-/* --- 8. Modal (Popup) --- */
+/* --- 8. Modal --- */
 .modal {
     display: none;
     position: fixed;
@@ -272,17 +275,12 @@ body {
     width: 100%;
     height: 100%;
     background-color: transparent; 
-    backdrop-filter: none; 
     justify-content: center;
     align-items: center;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
-
-.modal.show {
-    display: flex;
-    opacity: 1;
-}
+.modal.show { display: flex; opacity: 1; }
 
 .modal-content {
     background: rgba(30, 30, 30, 0.95);
@@ -295,15 +293,7 @@ body {
     transform: scale(0.8);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
-.modal.show .modal-content {
-    transform: scale(1);
-}
-
-.modal-content h3 {
-    margin-bottom: 20px;
-    font-weight: 500;
-}
+.modal.show .modal-content { transform: scale(1); }
 
 .close-btn {
     position: absolute;
@@ -312,9 +302,7 @@ body {
     color: #aaa;
     font-size: 24px;
     cursor: pointer;
-    transition: 0.2s;
 }
-
 .close-btn:hover { color: white; }
 
 .account-list {
@@ -323,53 +311,111 @@ body {
     gap: 10px;
     max-height: 300px;
     overflow-y: auto;
-    padding-right: 5px;
 }
-
 .account-item {
     background: rgba(255, 255, 255, 0.05);
     padding: 12px;
     border-radius: 10px;
     color: white;
     text-decoration: none;
-    transition: 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    border: 1px solid transparent;
+    transition: 0.3s;
 }
-
 .account-item:hover {
     background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-3px);
 }
 
-/* Scrollbar Styles */
-.account-list::-webkit-scrollbar { width: 6px; }
-.account-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
-.account-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
-.account-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
+/* --- 9. Animations Keyframes (หัวใจสำคัญของความดุ๊กดิ๊ก) --- */
+@keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
-/* --- 9. Animations --- */
-@keyframes blink {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.3; }
+/* ลอยขึ้นลง */
+@keyframes float-up-down {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
 }
 
-@keyframes popIn {
-    0% { opacity: 0; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1); }
+/* หายใจ + แสงวิบวับ */
+@keyframes breathing-glow {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+    50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(141, 89, 238, 0.6); border-color: rgba(140, 18, 221, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+}
+
+/* เด้งดึ๋ง */
+@keyframes jelly-bounce {
+    0%, 100% { transform: scale(1, 1); }
+    25% { transform: scale(0.9, 1.1); }
+    50% { transform: scale(1.1, 0.9); }
+    75% { transform: scale(0.95, 1.05); }
+}
+
+.cursor {
+    font-weight: bold;
+    color: #3b82f6;
+    animation: blink 1s step-end infinite;
 }
 
 /* --- 10. Responsive --- */
 @media (max-width: 500px) {
-    .profile-header {
-        flex-direction: column;
-        text-align: center;
-    }
+    .profile-header { flex-direction: column; text-align: center; }
     .avatar-container { margin: 0 auto; }
     .user-info h1 { justify-content: center; }
+    .card { width: 95%; padding: 20px; }
+}
+/* =========================================
+   Mobile Optimization (โหมดลื่นหัวแตกสำหรับมือถือ)
+   วางโค้ดนี้ไว้บรรทัดล่างสุดของ style.css
+========================================= */
+
+@media screen and (max-width: 768px) {
+    /* 1. ปิดเอฟเฟกต์ "กระจกเบลอ" (ตัวกินสเปคอันดับ 1) */
+    .card, #click-overlay, .modal-content {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        
+        /* เพิ่มสีพื้นหลังให้ทึบขึ้นหน่อยมาชดเชยที่ไม่มีเบลอ */
+        background: rgba(30, 30, 30, 0.95) !important; 
+        
+        /* ลดเงาฟุ้งๆ ที่คำนวณยาก */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5) !important; 
+    }
+
+    /* 2. หยุดการ์ดลอย (การขยับพิกเซลตลอดเวลาทำให้ CPU ทำงานหนัก) */
+    .card {
+        /* เหลือแค่เด้งตอนเปิดเว็บทีเดียวพอ ไม่ต้องลอยวนไปมา */
+        animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; 
+        transform: none !important; 
+        width: 90% !important; /* ปรับขนาดให้พอดีจอมือถือ */
+        margin: 0 auto;
+    }
+
+    /* 3. หยุดเอฟเฟกต์แสงหายใจที่รูปโปรไฟล์ */
+    .avatar-container {
+        animation: none !important;
+    }
+    
+    /* 4. ปิดการโหลดรูปเมาส์ (มือถือไม่มีเมาส์ โหลดไปก็เปลืองเน็ต) */
+    body, a, .play-btn, .close-btn {
+        cursor: auto !important;
+    }
+
+    /* 5. ปรับปุ่มให้กดง่ายขึ้นสำหรับนิ้วคน */
+    .badge-icon {
+        width: 42px; /* เล็กลงนิดหน่อยให้เรียงสวย */
+        height: 42px;
+        font-size: 1.2rem;
+    }
+    
+    .badges {
+        gap: 10px; /* ลดช่องว่างระหว่างปุ่ม */
+    }
+
+    /* ปรับขนาดตัวหนังสือให้ไม่อึดอัด */
+    .user-info h1 { font-size: 1.4rem; }
+    .click-text { font-size: 1.5rem; }
 }
