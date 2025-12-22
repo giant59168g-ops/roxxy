@@ -4,58 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile | Roxxy</title>
-    <link rel="icon" href="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber(1).png?raw=true" type="image/png">
+    <!-- ไอคอนเว็บ -->
+    <link rel="icon" href="https://i.postimg.cc/7LNH3NWW/Png_Tuber(1).png" type="image/png">
+    
+    <!-- เชื่อมต่อไฟล์ CSS (แยกไฟล์) -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- ฟอนต์และไอคอน -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
+    <!-- 1. Overlay (หน้ากดเข้า) -->
     <div id="click-overlay">
-        <img src="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber.gif?raw=true" class="enter-gif" alt="Welcome">
-        <div class="click-text">Click to Enter...</div>
+        <img src="https://i.postimg.cc/431f61Sq/Png_Tuber.gif" class="enter-gif" alt="Welcome">
+        <div class="click-text">Click to Profile...</div>
     </div>
 
+    <!-- 2. Background -->
     <div class="bg-image"></div>
 
+    <!-- 3. Roblox Modal (หน้าต่างเลือก ID) -->
     <div id="roblox-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
-            <h3>Select Roblox Account</h3>
+            <h3><i class="fas fa-gamepad" style="color:#e6e6e6;"></i> Select Account</h3>
             <div class="account-list">
                 <a href="https://www.roblox.com/users/2661396737/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
-                    <i class="fas fa-user"></i> ID:หลักRoxxy
+                    <i class="fas fa-user-circle"></i> ID: หลัก Roxxy
                 </a>
                 <a href="https://www.roblox.com/users/8745370380/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
-                    <i class="fas fa-user"></i> ID:เเมพตกปลา
+                    <i class="fas fa-fish"></i> ID: แมพตกปลา
                 </a>
                 <a href="https://www.roblox.com/users/8704297154/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
-                    <i class="fas fa-user"></i> ID:เเมพขุดเหมือง
+                    <i class="fas fa-hammer"></i> ID: แมพขุดเหมือง
                 </a>
                 <a href="https://www.roblox.com/users/9007481771/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
-                    <i class="fas fa-user"></i> ID:เเมพวอลเลย์บอล
+                    <i class="fas fa-volleyball-ball"></i> ID: แมพวอลเลย์บอล
                 </a>                
             </div>
         </div>
     </div>
     
+    <!-- 4. Main Card (ส่วนหลัก) -->
     <div class="card">
         <div class="profile-header">
+            <!-- Avatar -->
             <div class="avatar-container">
                 <div class="avatar" 
-                     style="background-image: url('https://github.com/giant59168g-ops/-Dinoverse/blob/main/Png_Tuber.gif?raw=true'); 
+                     style="background-image: url('https://i.postimg.cc/431f61Sq/Png_Tuber.gif'); 
                             background-color: rgba(0,0,0,0.5); 
                             background-position: center -8px;">
                 </div>
+                <!-- กรอบดุ๊กดิ๊ก -->
                 <img src="https://media.tenor.com/DZI4YglygNYAAAAj/chomp-chomp-discord.gif" class="avatar-frame" alt="Frame">
+                <!-- จุดสถานะออนไลน์ -->
                 <div class="status-dot"></div>
             </div>
 
+            <!-- Info -->
             <div class="user-info">
                 <h1>
-                    Roxxy 
-                    <i class="fas fa-crown owner-badge" title="Owner"></i>
-                    <i class="fas fa-gift"></i>
+                    <span class="rainbow-text">Roxxy</span>
+                    <i class="fas fa-crown" style="color: #ffd700; font-size: 1.2rem;" title="Owner"></i>
                 </h1>
                 <div class="role-badge">UID: roxxy_013</div>
                 <p class="bio-text">I am a <span id="typing-text"></span><span class="cursor">|</span></p>
@@ -64,6 +76,7 @@
 
         <div class="divider"></div>
 
+        <!-- Social Buttons -->
         <div class="badges">
             <a href="https://discord.gg/v3Dz5tSVuK" target="_blank" class="badge-icon discord"><i class="fab fa-discord"></i></a>
             <a href="https://www.youtube.com/@Roxxy-f3m" target="_blank" class="badge-icon youtube"><i class="fab fa-youtube"></i></a>
@@ -72,6 +85,7 @@
             <a href="https://ezdn.app/roxxy" target="_blank" class="badge-icon donate" title="Donate"><i class="fas fa-gift"></i></a>
         </div>
 
+        <!-- Music Player -->
         <div class="music-player">
             <div class="play-btn" id="play-btn"><i class="fas fa-play"></i></div>
             <div class="track-info">
@@ -90,7 +104,10 @@
     </audio>
 
     <script>
-        // --- 1. ระบบเล่นเพลง MP3 ---
+        /* =========================================
+           JAVASCRIPT LOGIC
+           ========================================= */
+
         var audio = document.getElementById("bg-music");
         var playBtn = document.getElementById("play-btn");
         var playIcon = playBtn.querySelector("i");
@@ -99,13 +116,14 @@
         var overlay = document.getElementById("click-overlay");
 
         function startSite() {
-            audio.volume = 0.3;
+            audio.volume = 0.2; 
             audio.play().then(() => {
                 playIcon.classList.remove("fa-play");
                 playIcon.classList.add("fa-pause");
-            }).catch(error => { console.log("Audio blocked:", error); });
+            }).catch(error => { console.log("Audio Autoplay Blocked:", error); });
+            
             overlay.style.opacity = '0';
-            setTimeout(() => { overlay.style.display = 'none'; }, 500);
+            setTimeout(() => { overlay.style.visibility = 'hidden'; }, 600);
         }
 
         if (overlay) {
@@ -128,22 +146,26 @@
         audio.addEventListener("timeupdate", function() {
             var percent = (audio.currentTime / audio.duration) * 100;
             progressFill.style.width = percent + "%";
-            var min = Math.floor(audio.currentTime / 60);
-            var sec = Math.floor(audio.currentTime % 60);
-            var durationMin = Math.floor((audio.duration || 0) / 60);
-            var durationSec = Math.floor((audio.duration || 0) % 60);
-            timeInfo.innerText = min + ":" + (sec < 10 ? "0" : "") + sec + " / " + durationMin + ":" + (durationSec < 10 ? "0" : "") + durationSec;
+            
+            var current = formatTime(audio.currentTime);
+            var duration = formatTime(audio.duration || 0);
+            timeInfo.innerText = current + " / " + duration;
         });
 
-        // --- 2. Popup Roblox ---
+        function formatTime(seconds) {
+            var min = Math.floor(seconds / 60);
+            var sec = Math.floor(seconds % 60);
+            return min + ":" + (sec < 10 ? "0" : "") + sec;
+        }
+
         var robloxBtn = document.querySelector('.badge-icon.roblox');
         var robloxModal = document.getElementById('roblox-modal');
         var closeBtn = document.querySelector('.close-btn');
+
         if (robloxBtn) robloxBtn.addEventListener('click', function(e) { e.preventDefault(); robloxModal.classList.add('show'); });
         if (closeBtn) closeBtn.addEventListener('click', function() { robloxModal.classList.remove('show'); });
         window.addEventListener('click', function(e) { if (e.target == robloxModal) robloxModal.classList.remove('show'); });
 
-        // --- 3. Typing Effect (แบบแก้ไขแล้ว) ---
         const texts = ["Streamer", "Developer", "Gamer", "Content Creator"]; 
         let count = 0;
         let index = 0;
@@ -154,23 +176,50 @@
             if (count === texts.length) { count = 0; }
             currentText = texts[count];
             letter = currentText.slice(0, ++index);
-
-            // เช็คว่ามี Element จริงไหมป้องกัน Error
+            
             const typingElement = document.getElementById("typing-text");
-            if(typingElement) {
-                typingElement.textContent = letter;
-            }
+            if(typingElement) typingElement.textContent = letter;
 
             if (letter.length === currentText.length) {
                 count++;
                 index = 0;
                 setTimeout(type, 2000); 
             } else {
-                setTimeout(type, 150); 
+                setTimeout(type, 100); 
             }
         })();
-        
-        // --- หมายเหตุ: เอา 3D Tilt Script ออกแล้ว เพื่อให้การ์ดลอย (Float) ได้สวยงาม ---
+
+        document.addEventListener('click', function(e) {
+            if(window.innerWidth < 768) return; 
+
+            const colorArray = ['#ff4d4d', '#ffaf40', '#fffa65', '#32ff7e', '#7efff5', '#18dcff', '#7d5fff'];
+            
+            for (let i = 0; i < 6; i++) { 
+                const particle = document.createElement('div');
+                particle.classList.add('click-particle');
+                document.body.appendChild(particle);
+
+                const x = e.clientX;
+                const y = e.clientY;
+                const dirX = (Math.random() - 0.5) * 80;
+                const dirY = (Math.random() - 0.5) * 80;
+                const color = colorArray[Math.floor(Math.random() * colorArray.length)];
+
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.backgroundColor = color;
+                
+                const animation = particle.animate([
+                    { transform: `translate(0,0) scale(1)`, opacity: 1 },
+                    { transform: `translate(${dirX}px, ${dirY}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 500 + Math.random() * 300,
+                    easing: 'cubic-bezier(0, .9, .57, 1)',
+                });
+
+                animation.onfinish = () => particle.remove();
+            }
+        });
     </script>
 </body>
 </html>
