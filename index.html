@@ -1,98 +1,8 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile | Roxxy</title>
-    <link rel="icon" href="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber(1).png?raw=true" type="image/png">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
-    <div id="click-overlay">
-        <img src="https://github.com/giant59168g-ops/Npro/blob/main/Png_Tuber.gif?raw=true" class="enter-gif" alt="Welcome">
-        <div class="click-text">Click to Profile...</div>
-    </div>
-
-    <div class="bg-image"></div>
-
-    <div id="roblox-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h3>Select Roblox Account</h3>
-            <div class="account-list">
-                <a href="https://www.roblox.com/users/2661396737/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
-                    <i class="fas fa-user"></i> ID:หลักRoxxy
-                </a>
-                <a href="https://www.roblox.com/users/8745370380/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
-                    <i class="fas fa-user"></i> ID:เเมพตกปลา
-                </a>
-                <a href="https://www.roblox.com/users/8704297154/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
-                    <i class="fas fa-user"></i> ID:เเมพขุดเหมือง
-                </a>
-                <a href="https://www.roblox.com/users/9007481771/profile?utm_medium=social&utm_source=heylink.me" target="_blank" class="account-item">
-                    <i class="fas fa-user"></i> ID:เเมพวอลเลย์บอล
-                </a>                
-            </div>
-        </div>
-    </div>
-    
-    <div class="card">
-        
-        <div class="profile-header">
-            <div class="avatar-container">
-                <div class="avatar" 
-                     style="background-image: url('https://github.com/giant59168g-ops/-Dinoverse/blob/main/Png_Tuber.gif?raw=true'); 
-                            background-color: rgba(0,0,0,0.5); 
-                            background-position: center -8px;">
-                </div>
-                <img src="https://media.tenor.com/DZI4YglygNYAAAAj/chomp-chomp-discord.gif" class="avatar-frame" alt="Frame">
-                <div class="status-dot"></div>
-            </div>
-
-            <div class="user-info">
-                <h1>
-                    Roxxy 
-                    <i class="fas fa-crown owner-badge" title="Owner"></i>
-                    <i class="fas fa-gift"></i>
-                </h1>
-                <div class="role-badge">UID: roxxy_013</div>
-                <p class="bio-text">Streamer & Developer</p>
-            </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="badges">
-            <a href="https://discord.gg/v3Dz5tSVuK" target="_blank" class="badge-icon discord"><i class="fab fa-discord"></i></a>
-            <a href="https://www.youtube.com/@Roxxy-f3m" target="_blank" class="badge-icon youtube"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@roxxy_013" target="_blank" class="badge-icon tiktok"><i class="fab fa-tiktok"></i></a>
-            <a href="#" class="badge-icon roblox"><i class="fas fa-gamepad"></i></a>
-            <a href="https://ezdn.app/roxxy" target="_blank" class="badge-icon donate" title="Donate"><i class="fas fa-gift"></i></a>
-        </div>
-
-        <div class="music-player">
-            <div class="play-btn" id="play-btn"><i class="fas fa-play"></i></div>
-            
-            <div class="track-info">
-                <div class="track-name">BABYMONSTER - SUPA DUPA LUV</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
-                </div>
-            </div>
-            
-            <div class="time-info" id="time-info">0:00 / 3:01</div>
-        </div>
-
-    </div> 
-    
-    <div id="youtube-audio" style="display:none;"></div>
-
-    <script>
-        // --- 1. ตั้งค่า YouTube Player ---
+<script>
+        // --- ตัวแปรสำหรับเช็คสถานะ ---
         var player;
+        var isPlayerReady = false; // เช็คว่า YouTube พร้อมหรือยัง
+
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-audio', {
                 height: '0',
@@ -103,7 +13,8 @@
                     'controls': 0,
                     'rel': 0,
                     'showinfo': 0,
-                    'loop': 1, // ช่วยเรื่อง Loop (บางกรณีต้องใช้ playlist คู่ แต่ใช้ JS สั่งชัวร์กว่า)
+                    'loop': 1,
+                    'playsinline': 1 // **สำคัญสำหรับ iOS** ให้เล่นในหน้าเว็บไม่เด้ง Fullscreen
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -120,22 +31,19 @@
         var progressInterval;
 
         function onPlayerReady(event) {
-            // พร้อมทำงาน
+            isPlayerReady = true; // บอกว่า YouTube โหลดเสร็จแล้ว
+            player.setVolume(30); // ตั้งเสียงรอไว้
         }
 
-        // --- 2. เช็คสถานะ + สั่ง Loop เพลง ---
         function onPlayerStateChange(event) {
             if (event.data == YT.PlayerState.PLAYING) {
-                // กำลังเล่น
                 isPlaying = true;
                 playIcon.classList.remove('fa-play');
                 playIcon.classList.add('fa-pause');
                 startProgressLoop();
             } else if (event.data == YT.PlayerState.ENDED) {
-                // *** เพิ่มตรงนี้: ถ้าเพลงจบ ให้เล่นใหม่ทันที ***
                 player.playVideo(); 
             } else {
-                // หยุดชั่วคราว หรืออื่นๆ
                 isPlaying = false;
                 playIcon.classList.remove('fa-pause');
                 playIcon.classList.add('fa-play');
@@ -143,7 +51,6 @@
             }
         }
 
-        // --- 3. ควบคุมปุ่ม Play/Pause ---
         playBtn.addEventListener('click', function() {
             if (isPlaying) {
                 player.pauseVideo();
@@ -152,15 +59,12 @@
             }
         });
 
-        // --- 4. ฟังก์ชั่นขยับหลอดเพลงและตัวเลข ---
         function startProgressLoop() {
             stopProgressLoop();
             progressInterval = setInterval(function() {
                 if (!player || !player.getDuration) return;
-                
                 var currentTime = player.getCurrentTime();
                 var duration = player.getDuration();
-                
                 if (duration > 0) {
                     var percent = (currentTime / duration) * 100;
                     progressBar.style.width = percent + '%';
@@ -179,23 +83,24 @@
             return min + ':' + (sec < 10 ? '0' : '') + sec;
         }
 
-        // --- 5. โหลด YouTube API ---
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // --- 6. จัดการหน้า Click to Enter ---
+        // --- ส่วนที่แก้ไข: การกดเข้าเว็บ (Click to Enter) ---
         var overlay = document.getElementById('click-overlay');
         
         if (overlay) {
             overlay.addEventListener('click', function() {
-                // เล่นเพลงเมื่อกดเข้าเว็บ
-                if(player && player.playVideo) {
-                    player.setVolume(30); 
-                    player.playVideo();
+                // เช็คว่า Player พร้อมไหม
+                if (player && isPlayerReady) {
+                    player.unMute();      // **สำคัญ** สั่งเปิดเสียงก่อน
+                    player.setVolume(30); // ตั้งระดับเสียง
+                    player.playVideo();   // สั่งเล่น
                 }
-                
+
+                // ซ่อนหน้าจอ Overlay
                 overlay.style.opacity = '0';
                 setTimeout(function() {
                     overlay.style.display = 'none';
@@ -203,7 +108,7 @@
             });
         }
 
-        // --- 7. จัดการ Modal (Roblox) ---
+        // --- Modal (Roblox) ---
         var robloxBtn = document.querySelector('.badge-icon.roblox');
         var robloxModal = document.getElementById('roblox-modal');
         var closeBtn = document.querySelector('.close-btn');
@@ -214,18 +119,14 @@
                 robloxModal.classList.add('show');
             });
         }
-
         if (closeBtn) {
             closeBtn.addEventListener('click', function() {
                 robloxModal.classList.remove('show');
             });
         }
-
         window.addEventListener('click', function(e) {
             if (e.target == robloxModal) {
                 robloxModal.classList.remove('show');
             }
         });
     </script>
-</body>
-</html>
