@@ -27,7 +27,7 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
 }
 
 /* =========================================
-   2. BACKGROUND & OVERLAY (พื้นหลังและหน้ากดเข้า)
+   2. BACKGROUND & OVERLAY
    ========================================= */
 .bg-image {
     position: fixed;
@@ -39,7 +39,7 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     background-image: url('https://i.redd.it/incm15e255ez.gif');
     background-size: cover;
     background-position: center;
-    filter: brightness(0.6) blur(2px); /* ปรับให้มืดและเบลอเล็กน้อย */
+    filter: brightness(0.6) blur(2px);
     transition: all 0.5s ease;
 }
 
@@ -52,7 +52,7 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     height: 100%;
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(10px);
-    z-index: 9999; /* อยู่สูงกว่าทุกอย่าง ยกเว้น Modal */
+    z-index: 9999;
     display: flex;
     flex-direction: column;
     gap: 25px;
@@ -99,14 +99,14 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     position: relative;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     
-    /* รวม Animation */
+    /* Animation */
     animation: 
         card-entrance 1s cubic-bezier(0.23, 1, 0.32, 1) forwards,
         float-card 6s ease-in-out infinite,
         rgb-border-glow 8s linear infinite;
 }
 
-/* --- ส่วนหัว (Avatar + Info) --- */
+/* --- Profile Header --- */
 .profile-header {
     display: flex;
     align-items: center;
@@ -206,7 +206,7 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     margin: 5px 0;
 }
 
-/* --- ปุ่มโซเชียล (Badges) --- */
+/* --- Social Badges --- */
 .badges {
     display: flex;
     justify-content: center;
@@ -243,16 +243,16 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
 .badge-icon:hover::before { transform: translateX(100%); }
 .badge-icon:hover { transform: translateY(-5px) scale(1.1); color: white; border-color: rgba(255, 255, 255, 0.3); }
 
-/* สีเฉพาะของแต่ละปุ่ม */
+/* Badge Specific Colors */
 .badge-icon.discord:hover { background: #5865F2; box-shadow: 0 5px 20px rgba(88, 101, 242, 0.4); }
 .badge-icon.youtube:hover { background: #FF0000; box-shadow: 0 5px 20px rgba(255, 0, 0, 0.4); }
 .badge-icon.tiktok:hover { background: #000000; box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2); }
 .badge-icon.roblox:hover { background: #eeeeee; color: #111; box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3); }
 .badge-icon.donate:hover { background: #2744e6; box-shadow: 0 5px 20px rgba(39, 68, 230, 0.4); }
 
-/* --- เครื่องเล่นเพลง (NEW DESIGN) --- */
+/* --- Music Player --- */
 .music-player {
-    background: #151520; /* สีพื้นหลังเข้มอมน้ำเงินตามรูป */
+    background: #151520;
     padding: 15px 20px;
     border-radius: 20px;
     display: flex;
@@ -266,11 +266,8 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     transition: 0.3s;
 }
 
-.music-player:hover {
-    border-color: rgba(255, 255, 255, 0.15);
-}
+.music-player:hover { border-color: rgba(255, 255, 255, 0.15); }
 
-/* ปุ่ม Play สีขาว */
 .play-btn {
     width: 45px;
     height: 45px;
@@ -287,16 +284,9 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     flex-shrink: 0;
 }
 
-.play-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
-}
+.play-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(255, 255, 255, 0.4); }
+.play-btn:active { transform: scale(0.95); }
 
-.play-btn:active {
-    transform: scale(0.95);
-}
-
-/* ส่วนข้อมูลเพลงตรงกลาง */
 .track-info {
     flex-grow: 1;
     display: flex;
@@ -307,7 +297,7 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
 
 .now-playing-label {
     font-size: 0.7rem;
-    color: #8892b0; /* สีเทาอมฟ้า */
+    color: #8892b0;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -324,7 +314,6 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     margin-bottom: 8px;
 }
 
-/* แถบ Progress Bar */
 .progress-bar {
     width: 100%;
     height: 4px;
@@ -337,14 +326,12 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
 .progress-fill {
     width: 0%;
     height: 100%;
-    /* ไล่สี ชมพู -> ม่วง แบบในรูป */
     background: linear-gradient(90deg, #ff758c, #a29bfe); 
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(162, 155, 254, 0.5);
     transition: width 0.1s linear;
 }
 
-/* ส่วนขวาสุด (เวลา + กราฟเสียง) */
 .right-controls {
     display: flex;
     flex-direction: column;
@@ -360,7 +347,7 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     text-align: right;
 }
 
-/* --- Visualizer (กราฟเสียงเต้นๆ) --- */
+/* Visualizer (แก้ไขให้หยุด/เล่นได้) */
 .visualizer {
     display: flex;
     align-items: flex-end;
@@ -373,21 +360,26 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     background: white;
     border-radius: 2px;
     animation: bounce 1s infinite ease-in-out;
+    animation-play-state: paused; /* ปกติหยุดนิ่ง */
 }
 
-/* สีของแต่ละแท่งตามรูป (ชมพู, ม่วง, น้ำเงิน, ฟ้า) */
+/* เมื่อมี class active (เพลงเล่น) ค่อยขยับ */
+.visualizer.active .bar {
+    animation-play-state: running; 
+}
+
 .bar:nth-child(1) { height: 10px; background: #ff4757; animation-delay: 0.1s; }
 .bar:nth-child(2) { height: 15px; background: #a29bfe; animation-delay: 0.3s; }
 .bar:nth-child(3) { height: 20px; background: #2ed573; animation-delay: 0.2s; }
 .bar:nth-child(4) { height: 12px; background: #1e90ff; animation-delay: 0.4s; }
 
 /* =========================================
-   4. MODAL (หน้าต่าง Popup Roblox)
+   4. MODAL (Roblox Popup)
    ========================================= */
 .modal {
     display: none;
     position: fixed;
-    z-index: 20000; /* ต้องสูงกว่า Overlay (9999) */
+    z-index: 20000;
     left: 0; top: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
@@ -425,7 +417,7 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     flex-direction: column;
     gap: 12px;
     max-height: 250px;
-    overflow-y: auto; /* ให้เลื่อนได้ถ้าบัญชีเยอะ */
+    overflow-y: auto;
     padding-right: 5px;
 }
 
@@ -444,14 +436,14 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
 }
 .account-item:hover { background: #333; color: white; border-color: #555; transform: translateY(-3px); }
 
-/* แต่ง Scrollbar ใน Modal ให้สวย */
+/* Scrollbar Customization */
 .account-list::-webkit-scrollbar { width: 5px; }
 .account-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
 .account-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 .account-list::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
 
 /* =========================================
-   5. ANIMATIONS (การเคลื่อนไหว)
+   5. ANIMATIONS
    ========================================= */
 @keyframes shine-rainbow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 @keyframes blink { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
@@ -464,7 +456,6 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     50% { transform: scaleY(1.5); opacity: 1; }
 }
 
-/* เอฟเฟกต์คลิกดาวระเบิด */
 .click-particle {
     position: absolute; width: 6px; height: 6px; background: white;
     border-radius: 50%; pointer-events: none; z-index: 9999;
@@ -472,15 +463,15 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
 .cursor { font-weight: bold; color: #3b82f6; animation: blink 1s step-end infinite; }
 
 /* =========================================
-   6. RESPONSIVE (ปรับแต่งสำหรับมือถือ)
+   6. RESPONSIVE (Mobile Optimization)
    ========================================= */
 @media screen and (max-width: 768px) {
     .card {
         padding: 25px;
         width: 95%;
-        backdrop-filter: none;
-        background: rgba(20, 20, 20, 0.95); /* ลดการกินสเปคในมือถือ */
-        animation: card-entrance 0.8s ease forwards; /* ปิดการลอยในมือถือเพื่อประหยัดแบต */
+        backdrop-filter: none; /* ปิด Blur เพื่อประหยัด GPU มือถือ */
+        background: rgba(20, 20, 20, 0.95);
+        animation: card-entrance 0.8s ease forwards;
     }
     .profile-header { flex-direction: column; text-align: center; gap: 15px; }
     .user-info h1 { justify-content: center; }
@@ -489,10 +480,9 @@ a, .play-btn, .close-btn, .account-item, #click-overlay {
     .enter-gif { width: 120px; }
     .click-text { font-size: 1.2rem; }
     
-    /* ปรับ Music Player ในมือถือ */
     .music-player { padding: 12px; gap: 12px; }
     .play-btn { width: 40px; height: 40px; font-size: 1rem; }
     .track-name { font-size: 0.85rem; max-width: 150px; }
-    .visualizer { display: none; /* ซ่อนกราฟเสียงในมือถือถ้าที่แคบไป */ }
+    .visualizer { display: none; }
     .time-info { font-size: 0.7rem; }
 }
