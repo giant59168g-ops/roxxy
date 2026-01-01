@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile | Roxxy</title>
+    
     <link rel="icon" href="https://i.postimg.cc/7LNH3NWW/Png_Tuber(1).png" type="image/png">
     
     <link rel="stylesheet" href="style.css">
@@ -96,7 +97,6 @@
                 </div>
             </div>
         </div>
-
     </div> 
 
     <audio id="bg-music" loop>
@@ -104,22 +104,20 @@
     </audio>
 
     <script>
-        /* =========================================
-           JAVASCRIPT LOGIC
-           ========================================= */
-
+        // --- Variables ---
         var audio = document.getElementById("bg-music");
         var playBtn = document.getElementById("play-btn");
         var playIcon = playBtn.querySelector("i");
         var progressFill = document.getElementById("progress-fill");
         var timeInfo = document.getElementById("time-info");
         var overlay = document.getElementById("click-overlay");
+        var visualizer = document.querySelector('.visualizer'); 
 
+        // --- Start Site Function ---
         function startSite() {
             audio.volume = 0.2; 
             audio.play().then(() => {
-                playIcon.classList.remove("fa-play");
-                playIcon.classList.add("fa-pause");
+                // Icon auto-update via event listener
             }).catch(error => { console.log("Audio Autoplay Blocked:", error); });
             
             overlay.style.opacity = '0';
@@ -131,26 +129,36 @@
             overlay.addEventListener("touchstart", startSite, {passive: true});
         }
 
+        // --- Music Player Logic ---
         playBtn.addEventListener("click", function() {
             if (audio.paused) {
                 audio.play();
-                playIcon.classList.remove("fa-play");
-                playIcon.classList.add("fa-pause");
             } else {
                 audio.pause();
-                playIcon.classList.remove("fa-pause");
-                playIcon.classList.add("fa-play");
             }
         });
 
+        // Event: Play (Graph runs)
+        audio.addEventListener('play', function() {
+            playIcon.classList.remove("fa-play");
+            playIcon.classList.add("fa-pause");
+            visualizer.classList.add("active");
+        });
+
+        // Event: Pause (Graph stops)
+        audio.addEventListener('pause', function() {
+            playIcon.classList.remove("fa-pause");
+            playIcon.classList.add("fa-play");
+            visualizer.classList.remove("active");
+        });
+
         audio.addEventListener("timeupdate", function() {
-            var percent = (audio.currentTime / audio.duration) * 100;
-            progressFill.style.width = percent + "%";
-            
-            var current = formatTime(audio.currentTime);
-            // var duration = formatTime(audio.duration || 0);
-            // ปรับให้แสดงแค่เวลาปัจจุบันเหมือนในรูป (ถ้าอยากได้แบบ 0:00 / 3:00 ให้ uncomment บรรทัดบนและแก้บรรทัดล่าง)
-            timeInfo.innerText = current; 
+            if(audio.duration) {
+                var percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percent + "%";
+                var current = formatTime(audio.currentTime);
+                timeInfo.innerText = current; 
+            }
         });
 
         function formatTime(seconds) {
@@ -159,6 +167,7 @@
             return min + ":" + (sec < 10 ? "0" : "") + sec;
         }
 
+        // --- Roblox Modal Logic ---
         var robloxBtn = document.querySelector('.badge-icon.roblox');
         var robloxModal = document.getElementById('roblox-modal');
         var closeBtn = document.querySelector('.close-btn');
@@ -167,6 +176,7 @@
         if (closeBtn) closeBtn.addEventListener('click', function() { robloxModal.classList.remove('show'); });
         window.addEventListener('click', function(e) { if (e.target == robloxModal) robloxModal.classList.remove('show'); });
 
+        // --- Typing Effect ---
         const texts = ["Streamer", "Developer", "Gamer", "Content Creator"]; 
         let count = 0;
         let index = 0;
@@ -190,6 +200,7 @@
             }
         })();
 
+        // --- Click Particles (Desktop Only) ---
         document.addEventListener('click', function(e) {
             if(window.innerWidth < 768) return; 
 
