@@ -15,6 +15,6 @@
 
 ## 🌐 เว็บไซต์สำหรับเข้าชม (Live Demo)
 โปรเจกต์นี้เปิดให้ใช้งานจริงผ่าน GitHub Pages สามารถคลิกเข้าชมหน้า Bio ได้ที่ลิงก์ด้านล่างนี้เลยครับ:
-> 📍 **Live Preview:** [👉 คลิกที่นี่เพื่อเข้าชมเว็บไซต์](tinyurl.com/roxxy-bio)
+> 📍 **Live Preview:** [👉 คลิกที่นี่เพื่อเข้าชมเว็บไซต์]([tinyurl.com/roxxy-bio](https://roxxy013.github.io/roxxy/))
 ---
 *Developed with ❤️ and lots of coffee.*
